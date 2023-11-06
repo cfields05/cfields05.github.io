@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<title>Bouncing Box</title>
@@ -8,48 +9,63 @@
 		.box {
 			width: 70px;
 			height: 70px;
-			background-color: teal;
+			background-color: pink;
 			font-size: 300%;
 			text-align: center;
 			user-select: none;
 			display: block;
 			position: absolute;
 			top: 100px;
-			left: 0px;  /* <--- Change me! */
+			left: 0px;
+			/* <--- Change me! */
 		}
-		.board{
+
+		.board {
 			height: 100vh;
+			background-color: lightskyblue;
+		}
+
+		.scoreboard {
+			font-size: 200%;
 		}
 	</style>
 	<!-- 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 
 </head>
+
 <body class="board">
 	<!-- HTML for the box -->
 	<div class="box">?</div>
+	<div class="scoreboard">Misclicks: 0</div>
 
 	<script>
-		(function(){
+		(function () {
 			'use strict'
 			/* global jQuery */
 
 			//////////////////////////////////////////////////////////////////
 			/////////////////// SETUP DO NOT DELETE //////////////////////////
 			//////////////////////////////////////////////////////////////////
-			
+
 			var box = jQuery('.box');	// reference to the HTML .box element
 			var board = jQuery('.board');	// reference to the HTML .board element
 			var boardWidth = board.width();	// the maximum X-Coordinate of the screen
+			var boardHeight = jQuery(window).height();
+			var scoreboard = jQuery('.scoreboard');
 
 			// Every 50 milliseconds, call the update Function (see below)
-			setInterval(update, 50);
-			
+			var interval = setInterval(update, 50);
+
 			// Every time the box is clicked, call the handleBoxClick Function (see below)
 			box.on('click', handleBoxClick);
 
+			// Every time board is clicked, call handleMisclick
+			board.on('click', handleMisclick);
+
 			// moves the Box to a new position on the screen along the X-Axis
-			function moveBoxTo(newPositionX) {
+			function moveBoxTo(newPositionX, newPositionY) {
 				box.css("left", newPositionX);
+				box.css("top", newPositionY);
 			}
 
 			// changes the text displayed on the Box
@@ -57,35 +73,110 @@
 				box.text(newText);
 			}
 
+			// changes the text displayed on the scoreboard
+			function changeScoreboardText(newText) {
+				scoreboard.text(newText);
+			}
+
 			//////////////////////////////////////////////////////////////////
 			/////////////////// YOUR CODE BELOW HERE /////////////////////////
 			//////////////////////////////////////////////////////////////////
-			
-			// TODO 2 - Variable declarations 
-			
 
-			
+			// TODO 2 - Variable declarations 
+
+
+			var positionX = 100;
+			var positionY = 100;
+			var speed = 10;
+			var speedY = 10
+			var points = 0;
+			var misclicks = 0;
+			var clicks = 0;
+
 			/* 
 			This Function will be called 20 times/second. Each time it is called,
 			it should move the Box to a new location. If the box drifts off the screen
 			turn it around! 
 			*/
-			function update() {
-				
 
-			};
+			function update() {
+				positionX += speed;
+				positionY += speedY;
+				moveBoxTo(positionX, positionY);
+				if (positionX > boardWidth) {
+					speed *= -1;
+				} if (positionX < 0) {
+					speed *= -1;
+				} if (positionY > boardHeight) {
+					speedY *= -1;
+				} if (positionY < 0) {
+					speedY *= -1;
+				}
+			}
 
 			/* 
 			This Function will be called each time the box is clicked. Each time it is called,
 			it should increase the points total, increase the speed, and move the box to
 			the left side of the screen.
 			*/
+
+			/*
+			function getRandomColor() {
+				var red = Math.floor(Math.random() * 256);
+				var green = Math.floor(Math.random() * 256);
+				var blue = Math.floor(Math.random() * 256);
+				var colorString = "rgb(" + red + ", " + green + ", " + blue ")";
+				return colorString;
+			}
+			*/
+
+			function speed3() {
+				if (speed >= 0) {
+					speed += 3;
+				} else if (speed < 0) {
+					speed -= 3;
+				} if (speedY >= 0) {
+					speedY += 3;
+				} else if (speedY < 0) {
+					speedY -= 3;
+				}
+			}
+
 			function handleBoxClick() {
-				
+				positionX = Math.random() * boardWidth;
+				positionY = Math.random() * boardHeight;
+				++clicks;
+				if (clicks == 3) {
+					speed3();
+					clicks = 0;
+				}
+				++points;
+				changeBoxText(points);
+				box.css('background-color', getRandomColor());
+			}
 
+			function endGame() {
+				clearInterval(interval);
+			}
 
-			};
+			function resetGame() {
+				points = 0;
+				misclicks = 0;
+				interval = setInterval(update, 50);
+			}
+
+			function handleMisclick() {
+				++misclicks;
+				changeScoreboardText("Misclicks: " + misclicks);
+				if (misclicks == 10) {
+					// endGame();
+				} if (misclicks > 10) {
+					// resetGame();
+				}
+			}
+
 		})();
 	</script>
 </body>
+
 </html>
