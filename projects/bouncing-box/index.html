@@ -157,6 +157,7 @@
 				}
 				++points;
 				changeBoxText(points);
+				misclicks--;
 			}
 
 			// end the game
@@ -168,9 +169,13 @@
 			// reset the game? do I even need both of these?
 
 			function resetGame() {
+				interval = setInterval(update, 50);
 				points = 0;
 				misclicks = 0;
-				interval = setInterval(update, 50);
+				speed = 0;
+				speedY = 0;
+				positionX = Math.random() * boardWidth;
+				positionY = Math.random() * boardHeight;
 			}
 
 			// do stuff when you *don't* click the box
@@ -179,9 +184,9 @@
 				misclicks++;
 				changeScoreboardText("Misclicks: " + misclicks);
 				if (misclicks >= 10) {
-					// endGame();
+					endGame();
 				} if (misclicks > 10) {
-					// resetGame();
+					resetGame();
 				}
 			}
 
