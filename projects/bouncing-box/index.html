@@ -169,11 +169,12 @@
 			// reset the game? do I even need both of these?
 
 			function resetGame() {
-				interval = setInterval(update, 50);
 				points = 0;
+				changeBoxText(points);
 				misclicks = 0;
-				speed = 0;
-				speedY = 0;
+				speed = 10;
+				speedY = 10;
+				interval = setInterval(update, 50);
 				positionX = Math.random() * boardWidth;
 				positionY = Math.random() * boardHeight;
 			}
