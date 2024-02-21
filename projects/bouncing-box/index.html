@@ -170,10 +170,13 @@
 
 			function resetGame() {
 				points = 0;
-				changeBoxText(points);
+				changeBoxText("?");
 				misclicks = 0;
+				changeScoreboardText("Misclicks: " + misclicks);
 				speed = 10;
 				speedY = 10;
+				clicks = 0;
+				box.css('background-color', getRandomColor);
 				interval = setInterval(update, 50);
 				positionX = Math.random() * boardWidth;
 				positionY = Math.random() * boardHeight;
