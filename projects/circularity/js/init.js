@@ -23,6 +23,11 @@ var init = function (window) {
 
         var circle;
         var circles = [];
+        var circleNum = prompt("How many circles do you want to see?");
+        while (circleNum < 0) {
+            alert("Invalid response! Please enter a positive number.");
+            circleNum = prompt("How many circles do you want to see?");
+        }
 
         // TODO 2 : Create a function that draws a circle 
         
@@ -35,7 +40,7 @@ var init = function (window) {
 
         // TODO 3 / 7 : Call the drawCircle() function 
 
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < circleNum; i++) {
             drawCircle()
         }
 
