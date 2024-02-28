@@ -24,9 +24,9 @@ var init = function (window) {
         var circle;
         var circles = [];
         var circleNum = prompt("How many circles do you want to see?");
-        while (circleNum < 0) {
-            alert("Invalid response! Please enter a positive number.");
-            circleNum = prompt("How many circles do you want to see?");
+
+        while (circleNum < 1 || isNaN(circleNum)) {
+            circleNum = prompt("Invalid response! Please enter a positve number greater than 0, such as 18, 76, or 231.\n\nHow many circles do you want to see?");
         }
 
         // TODO 2 : Create a function that draws a circle 
