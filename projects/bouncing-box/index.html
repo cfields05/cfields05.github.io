@@ -28,6 +28,11 @@
 		.scoreboard {
 			font-size: 200%;
 		}
+
+		#endgameText {
+			text-align: center;
+			font-size: 350%;
+		}
 	</style>
 	<!-- 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
 
@@ -37,6 +42,7 @@
 	<!-- HTML for the box -->
 	<div class="box">?</div>
 	<div class="scoreboard">Misclicks: 0</div>
+	<p id="endgameText"></p>
 
 	<script>
 		(function () {
@@ -164,6 +170,7 @@
 
 			function endGame() {
 				clearInterval(interval);
+				document.getElementById("endgameText").innerHTML = "Game Over! Click anywhere to reset.";
 			}
 
 			// reset the game? do I even need both of these?
@@ -180,6 +187,7 @@
 				interval = setInterval(update, 50);
 				positionX = Math.random() * boardWidth;
 				positionY = Math.random() * boardHeight;
+				document.getElementById("endgameText").innerHTML = "";
 			}
 
 			// do stuff when you *don't* click the box
