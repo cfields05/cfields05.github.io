@@ -26,6 +26,7 @@ var runLevels = function (window) {
 
       sawBladeHitZone.x = x;
       sawBladeHitZone.y = y;
+      sawBladeHitZone.rotationalVelocity = -15;
       game.addGameItem(sawBladeHitZone);
 
       var obstacleImage = draw.bitmap("img/sawblade.png");
@@ -44,7 +45,7 @@ var runLevels = function (window) {
       enemy.x = x;
       enemy.y = y;
       enemy.velocityX = -3;
-      enemy.rotationalVelocity = -10;
+      enemy.rotationalVelocity = -5;
 
       game.addGameItem(enemy);
 
