@@ -1,41 +1,53 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="index.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    </head>
-    <body>
-        <h1>Wizard Clicker</h1>
-        <!-- <div class="top-box"> -->
-            <div class="main-box">
-                <div class="clicker-box">
-                   
-                </div>
-                <div class="autoclicker-box">
 
-                </div>
-                <div class="upgrade-box">
-                    
-                </div>
-            </div>
-            <!-- <div class="credits">
+<head>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>Wizard Clicker</h1>
+    <!-- <div class="top-box"> -->
+    <div class="main-box">
+        <div class="clicker-box">
+            <img src="/projects/clicker-chaos/images/orb.png" id="clicker-image">
+            <p id="mana-amount">Mana Generated: 0</p>
+            <p>Mana Generated per second: 0</p>
+        </div>
+
+        <div class="autoclicker-box">
+
+        </div>
+        <div class="upgrade-box">
+
+        </div>
+    </div>
+    <!-- <div class="credits">
 
             </div> -->
-        <!-- </div> -->
-        <script>
-            // Variables
-            
-      
-            // Core Functionality
+    <!-- </div> -->
+    <script>
+        // Variables
+
+        var mana = 0;
+
+        // Core Functionality
 
 
-            // Event/Click Listeners
-            
+        // Event/Click Listeners
 
-            // Functions
-            
-            
-            /* All code above here */
-          </script>
-    </body>
+        $("#clicker-image").on("click", generateMana);
+
+        // Functions
+
+        function generateMana() {
+            mana++;
+            $("#mana-amount").text("Mana Generated: " + mana);
+        }
+
+        /* All code above here */
+    </script>
+</body>
+
 </html>

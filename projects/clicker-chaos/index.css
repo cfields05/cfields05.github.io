@@ -1,8 +1,13 @@
+body {
+    background-color: lightsteelblue;
+}
+
 .main-box {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: darkslategrey;
+    background-color: rgb(146, 78, 219);
+    border-radius: 20px;
 }
 
 /* Flex direction: column here allows us
@@ -12,6 +17,7 @@ as a vertical list */
     flex-grow: 2;
     display: flex;
     flex-direction: column;
+    border-radius: 20px;
 }
 
 .autoclicker-box > div {
@@ -30,10 +36,12 @@ as a vertical list */
 
 .upgrade-box {
     flex-grow: 2;
+    border-radius: 20px;
 }
 
 .clicker-box {
     flex-grow: 4;
+    border-radius: 20px;
 }
 
 .clicker-box > img {
@@ -46,12 +54,12 @@ as a vertical list */
     text-align: center;
 }
 
-#ram-amount {
+#mana-amount {
     font-weight: bold;
 }
 
 .main-box > div {
-    background-color: lightgray;
+    background-color: rgb(245, 238, 219);
     margin: 20px;
     padding: 30px;
     font-size: 20px;
