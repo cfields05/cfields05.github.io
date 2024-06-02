@@ -12,12 +12,30 @@
     <div class="main-box">
         <div class="clicker-box">
             <img src="/projects/clicker-chaos/images/orb.png" id="clicker-image">
-            <p id="mana-amount">Mana Generated: 0</p>
-            <p>Mana Generated per second: 0</p>
+            <p id="mana-amount">Mana Generated: 0 points</p>
+            <p id="mana-per-second">Mana Generated per Second: 0 points</p>
         </div>
 
         <div class="autoclicker-box">
+            <div class="autoclicker" id="autoclicker1" title="One point of mana generated per second!">
+                <p>Black Cat</p>
+                <p id="cat-count">Owned: 0</p>
+                <p id="cat-cost">Cost: 50 mana</p>
+                <button id="purchase-cat">BUY ONE</button>
+            </div>
 
+            <div class="autoclicker" id="autoclicker2" title="Ten points of mana generated per second!">
+                <p>Magic Wand</p>
+                <p id="wand-count">Owned: 0</p>
+                <p id="wand-cost">Cost: 150 mana</p>
+                <button id="purchase-wand">BUY ONE</button>
+            </div>
+            <div class="autoclicker" id="autoclicker3" title="Twenty-five points of mana generated per second!">
+                <p>Magic Staff</p>
+                <p id="staff-count">Owned: 0</p>
+                <p id="staff-cost">Cost: 350 mana</p>
+                <button id="purchase-staff">BUY ONE</button>
+            </div>
         </div>
         <div class="upgrade-box">
 
@@ -29,21 +47,102 @@
     <!-- </div> -->
     <script>
         // Variables
-
         var mana = 0;
+        var manaPerSecond = 0;
+
+        var blackCat = {
+            mps: 1, // each black cat will generate one mana per second
+            numberOwned: 0, // start with no black cats
+            baseCost: 50, // base cost is 50 points of mana
+        };
+
+        var magicWand = {
+            mps: 10, // each magic wand will generate one mana per second
+            numberOwned: 0, // start with no magic wands
+            baseCost: 150, // base cost is 150 points of mana
+        };
+
+        var magicStaff = {
+            mps: 25, //each magic staff will generate one mana per second
+            numberOwned: 0, // start with no magic staves
+            baseCost: 350, // base cost is 350 points of mana
+        }
 
         // Core Functionality
-
+        setInterval(addAutoMana, 1000);
 
         // Event/Click Listeners
-
         $("#clicker-image").on("click", generateMana);
+        $("#purchase-cat").on("click", purchaseBlackCat);
+        $("#purchase-wand").on("click", purchaseMagicWand);
+        $("#purchase-staff").on("click", purchaseMagicStaff);
 
         // Functions
-
         function generateMana() {
             mana++;
-            $("#mana-amount").text("Mana Generated: " + mana);
+            $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
+        }
+
+        function purchaseBlackCat() {
+            var cost = Math.ceil(blackCat.baseCost * Math.pow(1.1, blackCat.numberOwned));
+
+            if (mana >= cost) {
+                mana -= cost;
+                manaPerSecond += blackCat.mps;
+                blackCat.numberOwned++;
+
+                $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
+                $("#mana-per-second").text("Mana Generated per Second: " + manaPerSecond + " points");
+                $("#cat-count").text("Owned: " + blackCat.numberOwned);
+            }
+
+            var newCost = Math.ceil(
+                blackCat.baseCost * Math.pow(1.1, blackCat.numberOwned)
+            );
+            $("#cat-cost").text("Cost: " + newCost + " mana");
+        }
+
+        function purchaseMagicWand() {
+            var cost = Math.ceil(magicWand.baseCost * Math.pow(1.1, magicWand.numberOwned));
+
+            if (mana >= cost) {
+                mana -= cost;
+                manaPerSecond += magicWand.mps;
+                magicWand.numberOwned++;
+
+                $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
+                $("#mana-per-second").text("Mana Generated per Second: " + manaPerSecond + " points");
+                $("#wand-count").text("Owned: " + magicWand.numberOwned);
+            }
+
+            var newCost = Math.ceil(
+                magicWand.baseCost * Math.pow(1.1, magicWand.numberOwned)
+            );
+            $("#wand-cost").text("Cost: " + newCost + " mana");
+        }
+
+        function purchaseMagicStaff() {
+            var cost = Math.ceil(magicStaff.baseCost * Math.pow(1.1, magicStaff.numberOwned));
+
+            if (mana >= cost) {
+                mana -= cost;
+                manaPerSecond += magicStaff.mps;
+                magicStaff.numberOwned++;
+
+                $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
+                $("#mana-per-second").text("Mana Generated per Second: " + manaPerSecond + " points");
+                $("#staff-count").text("Owned: " + magicStaff.numberOwned);
+            }
+
+            var newCost = Math.ceil(
+                magicStaff.baseCost * Math.pow(1.1, magicStaff.numberOwned)
+            );
+            $("#staff-cost").text("Cost: " + newCost + " mana");
+        }
+
+        function addAutoMana() {
+            mana += manaPerSecond;
+            $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
         }
 
         /* All code above here */
