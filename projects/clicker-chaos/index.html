@@ -27,19 +27,41 @@
             <div class="autoclicker" id="autoclicker2" title="Ten points of mana generated per second!">
                 <p>Magic Wand</p>
                 <p id="wand-count">Owned: 0</p>
-                <p id="wand-cost">Cost: 150 mana</p>
+                <p id="wand-cost">Cost: 200 mana</p>
                 <button id="purchase-wand">BUY ONE</button>
             </div>
             <div class="autoclicker" id="autoclicker3" title="Twenty-five points of mana generated per second!">
                 <p>Magic Staff</p>
                 <p id="staff-count">Owned: 0</p>
-                <p id="staff-cost">Cost: 350 mana</p>
+                <p id="staff-cost">Cost: 500 mana</p>
                 <button id="purchase-staff">BUY ONE</button>
             </div>
-        </div>
-        <div class="upgrade-box">
 
+            <div class="autoclicker" id="autoclicker4" title="Fifty points of mana generated per second!">
+                <p>Magic Broomstick</p>
+                <p id="broom-count">Owned: 0</p>
+                <p id="broom-cost">Cost: 1000 mana</p>
+                <button id="purchase-broom">BUY ONE</button>
+            </div>
+
+            <div class="autoclicker" id="autoclicker5" title="One hundred points of mana generated per second!">
+                <p>Magic Spellbook</p>
+                <p id="book-count">Owned: 0</p>
+                <p id="book-cost">Cost: 1600 mana</p>
+                <button id="purchase-book">BUY ONE</button>
+            </div>
+
+            <div class="autoclicker" id="autoclicker6" title="Two hundred points of mana generated per second!">
+                <p>Super Cool Wizard Hat</p>
+                <p id="hat-count">Owned: 0</p>
+                <p id="hat-cost">Cost: 2500 mana</p>
+                <button id="purchase-hat">BUY ONE</button>
+            </div>
         </div>
+
+        <!-- <div class="upgrade-box">
+
+        </div> -->
     </div>
     <!-- <div class="credits">
 
@@ -57,15 +79,33 @@
         };
 
         var magicWand = {
-            mps: 10, // each magic wand will generate one mana per second
+            mps: 10, // each magic wand will generate ten mana per second
             numberOwned: 0, // start with no magic wands
-            baseCost: 150, // base cost is 150 points of mana
+            baseCost: 200, // base cost is 200 points of mana
         };
 
         var magicStaff = {
-            mps: 25, //each magic staff will generate one mana per second
+            mps: 25, // each magic staff will generate twenty-five mana per second
             numberOwned: 0, // start with no magic staves
-            baseCost: 350, // base cost is 350 points of mana
+            baseCost: 500, // base cost is 500 points of mana
+        }
+
+        var magicBroomstick = {
+            mps: 50, // each magic broomstick will generate fifty mana per second
+            numberOwned: 0, // start with no magic broomsticks
+            baseCost: 1000, // base cost is 1000 points of mana
+        }
+
+        var magicSpellbook = {
+            mps: 100, // each magic spellbook will generate one hundred mana per second
+            numberOwned: 0, // start with no magic broomsticks
+            baseCost: 1600, // base cost is 1600 points of mana
+        }
+
+        var wizardHat = {
+            mps: 200, // each super cool wizard hat will generate two hundred mana per second
+            numberOwned: 0, // start with no super cool wizard hats
+            baseCost: 2500, // base cost is 2500 points of mana
         }
 
         // Core Functionality
@@ -76,6 +116,9 @@
         $("#purchase-cat").on("click", purchaseBlackCat);
         $("#purchase-wand").on("click", purchaseMagicWand);
         $("#purchase-staff").on("click", purchaseMagicStaff);
+        $("#purchase-broom").on("click", purchaseBroomstick);
+        $("#purchase-book").on("click", purchaseSpellbook);
+        $("#purchase-hat").on("click", purchaseWizardHat);
 
         // Functions
         function generateMana() {
@@ -138,6 +181,63 @@
                 magicStaff.baseCost * Math.pow(1.1, magicStaff.numberOwned)
             );
             $("#staff-cost").text("Cost: " + newCost + " mana");
+        }
+
+        function purchaseBroomstick() {
+            var cost = Math.ceil(magicBroomstick.baseCost * Math.pow(1.1, magicBroomstick.numberOwned));
+
+            if (mana >= cost) {
+                mana -= cost;
+                manaPerSecond += magicBroomstick.mps;
+                magicBroomstick.numberOwned++;
+
+                $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
+                $("#mana-per-second").text("Mana Generated per Second: " + manaPerSecond + " points");
+                $("#broom-count").text("Owned: " + magicBroomstick.numberOwned);
+            }
+
+            var newCost = Math.ceil(
+                magicBroomstick.baseCost * Math.pow(1.1, magicBroomstick.numberOwned)
+            );
+            $("#broom-cost").text("Cost: " + newCost + " mana");
+        }
+
+        function purchaseSpellbook() {
+            var cost = Math.ceil(magicSpellbook.baseCost * Math.pow(1.1, magicSpellbook.numberOwned));
+
+            if (mana >= cost) {
+                mana -= cost;
+                manaPerSecond += magicSpellbook.mps;
+                magicSpellbook.numberOwned++;
+
+                $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
+                $("#mana-per-second").text("Mana Generated per Second: " + manaPerSecond + " points");
+                $("#book-count").text("Owned: " + magicSpellbook.numberOwned);
+            }
+
+            var newCost = Math.ceil(
+                magicSpellbook.baseCost * Math.pow(1.1, magicSpellbook.numberOwned)
+            );
+            $("#book-cost").text("Cost: " + newCost + " mana");
+        }
+
+        function purchaseWizardHat() {
+            var cost = Math.ceil(wizardHat.baseCost * Math.pow(1.1, wizardHat.numberOwned));
+
+            if (mana >= cost) {
+                mana -= cost;
+                manaPerSecond += wizardHat.mps;
+                wizardHat.numberOwned++;
+
+                $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
+                $("#mana-per-second").text("Mana Generated per Second: " + manaPerSecond + " points");
+                $("#hat-count").text("Owned: " + wizardHat.numberOwned);
+            }
+
+            var newCost = Math.ceil(
+                wizardHat.baseCost * Math.pow(1.1, wizardHat.numberOwned)
+            );
+            $("#hat-cost").text("Cost: " + newCost + " mana");
         }
 
         function addAutoMana() {
