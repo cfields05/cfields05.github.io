@@ -108,6 +108,7 @@ $(document).ready(function () {
   ///////////////////////////////////////////////////
 
   // This function generates objects for 26 of the necessary 27 entries into the dataShapes array that is used for most of this program
+  // Challenge: Add more stuff
   function generateShapeData() {
     const data = [];
     const colors = ["red", "green", "blue"];
