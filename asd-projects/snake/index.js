@@ -101,6 +101,8 @@ function checkForNewDirection(event) {
     case KEY.DOWN:
       snake.head.direction = "down";
       break;
+    default:
+      break;
   }
 
   // FILL IN THE REST
@@ -118,6 +120,19 @@ function moveSnake() {
   column/row properties. 
   
   */
+  for (var i = snake.body.length - 1; i > 0; i--) {
+    var snakeSquare = snake.body[i];
+
+    var nextSnakeSquare = snakeSquare - 1;
+    var nextRow = nextSnakeSquare.row;
+    var nextColumn = nextSnakeSquare.column;
+    var nextDirection = nextSnakeSquare.direction;
+
+    snakeSquare.direction = nextDirection;
+    snakeSquare.row = nextRow;
+    snakeSquare.column = nextColumn;
+    repositionSquare(snakeSquare);
+  }
 
   //Before moving the head, check for a new direction from the keyboard input
   checkForNewDirection();
@@ -141,6 +156,8 @@ function moveSnake() {
       break;
     case "down":
       snake.head.row += 1;
+      break;
+    default:
       break;
   }
   repositionSquare(snake.head);
@@ -295,7 +312,7 @@ function makeSnakeSquare(row, column) {
   // add snakeSquare to the end of the body Array and set it as the new tail
   snake.body.push(snakeSquare);
   snake.tail = snakeSquare;
-  console.log({snake});
+  console.log({ snake });
 }
 
 /* 
