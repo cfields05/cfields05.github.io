@@ -123,7 +123,7 @@ function moveSnake() {
   for (var i = snake.body.length - 1; i > 0; i--) {
     var snakeSquare = snake.body[i];
 
-    var nextSnakeSquare = snakeSquare - 1;
+    var nextSnakeSquare = snake.body[i - 1];
     var nextRow = nextSnakeSquare.row;
     var nextColumn = nextSnakeSquare.column;
     var nextDirection = nextSnakeSquare.direction;
@@ -244,6 +244,12 @@ function hasCollidedWithSnake() {
   head and each part of the snake's body also knows its own row and column.
   
   */
+  for (let i = 1; i < snake.body.length; i++) {
+    const currentSquare = snake.body[i];
+    if (snake.head.column === currentSquare.column && snake.head.row === currentSquare.row) {
+      return true;
+    }
+  }
 
   return false;
 }
@@ -312,7 +318,7 @@ function makeSnakeSquare(row, column) {
   // add snakeSquare to the end of the body Array and set it as the new tail
   snake.body.push(snakeSquare);
   snake.tail = snakeSquare;
-  console.log({ snake });
+  // console.log({ snake });
 }
 
 /* 
@@ -329,7 +335,7 @@ function makeSnakeSquare(row, column) {
 function handleKeyDown(event) {
   // TODO 6a: make the handleKeyDown function register which key is pressed
   activeKey = event.which;
-  console.log(activeKey);
+  // console.log(activeKey);
 }
 
 /* Given a gameSquare (which may be a snakeSquare or the apple), position
@@ -358,6 +364,13 @@ function getRandomAvailablePosition() {
     randomPosition.column = Math.floor(Math.random() * COLUMNS);
     randomPosition.row = Math.floor(Math.random() * ROWS);
     spaceIsAvailable = true;
+
+    for (let i = 1; i < snake.body.length; i++) {
+      const currentSquare = snake.body[i];
+      if (apple.column === currentSquare.column && apple.row === currentSquare.row) {
+        spaceIsAvailable = false;
+      }
+    }
 
     /*
     TODO 13: After generating the random position determine if that position is
