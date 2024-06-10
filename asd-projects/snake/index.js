@@ -146,20 +146,37 @@ function moveSnake() {
 
   switch (snake.head.direction) {
     case "left":
-      snake.head.column -= 1;
+      if (snake.body.length < 3 || snake.head.column - 1 !== snake.body[2].column) {
+        snake.head.column -= 1;
+      } else {
+        snake.head.column += 1;
+      }
       break;
     case "right":
-      snake.head.column += 1;
+      if (snake.body.length < 3 || snake.head.column + 1 !== snake.body[2].column) {
+        snake.head.column += 1;
+      } else {
+        snake.head.column -= 1;
+      }
       break;
     case "up":
-      snake.head.row -= 1;
+      if (snake.body.length < 3 || snake.head.row - 1 !== snake.body[2].row) {
+        snake.head.row -= 1;
+      } else {
+        snake.head.row += 1;
+      }
       break;
     case "down":
-      snake.head.row += 1;
+      if (snake.body.length < 3 || snake.head.row + 1 !== snake.body[2].row) {
+        snake.head.row += 1;
+      } else {
+        snake.head.row -= 1;
+      }
       break;
     default:
       break;
   }
+
   repositionSquare(snake.head);
 }
 
@@ -230,7 +247,7 @@ function handleAppleCollision() {
       column = snake.tail.column;
       break;
   }
-  console.log(snake.tail);
+  // console.log(snake.tail);
 
   makeSnakeSquare(row, column);
 }
@@ -367,7 +384,7 @@ function getRandomAvailablePosition() {
 
     for (let i = 1; i < snake.body.length; i++) {
       const currentSquare = snake.body[i];
-      if (apple.column === currentSquare.column && apple.row === currentSquare.row) {
+      if (randomPosition.column === currentSquare.column && randomPosition.row === currentSquare.row) {
         spaceIsAvailable = false;
       }
     }
