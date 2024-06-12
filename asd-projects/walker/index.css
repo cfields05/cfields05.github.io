@@ -21,3 +21,11 @@ body {
 /*   left: 100px; */  /* Uncomment if you want to set a "starting" position */
 /*   top: 100px;  */  /* Uncomment if you want to set a "starting" position */
 }
+
+#walker2 {
+  background-color: blueviolet;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  position: absolute;
+}
