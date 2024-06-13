@@ -15,14 +15,14 @@ function runProgram() {
 
   // KEY object holds key codes that the program will respond to when pressed
   const KEY = {
-    LEFT: 37,
-    RIGHT: 39,
-    UP: 38,
-    DOWN: 40,
     W: 87,
     A: 65,
     S: 83,
     D: 68,
+    LEFT: 37,
+    RIGHT: 39,
+    UP: 38,
+    DOWN: 40,
   }
 
   // Holds constant values for each of the 4 walls
@@ -84,35 +84,35 @@ function runProgram() {
 
   // Handles keys being pressed at any time and adjusts speed if appropriate keys are pressed
   function handleKeyDown(event) {
-    // Handles key input for player 1 (WALKER recognizes LEFT, RIGHT, UP, and DOWN)
+    // Handles key input for player 1 (WALKER recognizes W, A, S, and D)
     switch (event.which) {
-      case KEY.LEFT:
+      case KEY.A:
         WALKER.speedX = WALKER.isIt ? -4 : -5;
         break;
-      case KEY.RIGHT:
+      case KEY.D:
         WALKER.speedX = WALKER.isIt ? 4 : 5;
         break;
-      case KEY.UP:
+      case KEY.W:
         WALKER.speedY = WALKER.isIt ? -4 : -5;
         break;
-      case KEY.DOWN:
+      case KEY.S:
         WALKER.speedY = WALKER.isIt ? 4 : 5;
         break;
     }
 
 
-    // Handles key input for player 2 (WALKER2 recognizes W, A, S, and D)
+    // Handles key input for player 2 (WALKER2 recognizes LEFT, RIGHT, UP, and DOWN)
     switch (event.which) {
-      case KEY.A:
+      case KEY.LEFT:
         WALKER2.speedX = WALKER2.isIt ? -4 : -5;
         break;
-      case KEY.D:
+      case KEY.RIGHT:
         WALKER2.speedX = WALKER2.isIt ? 4 : 5;
         break;
-      case KEY.W:
+      case KEY.UP:
         WALKER2.speedY = WALKER2.isIt ? -4 : -5;
         break;
-      case KEY.S:
+      case KEY.DOWN:
         WALKER2.speedY = WALKER2.isIt ? 4 : 5;
         break;
     }
@@ -122,24 +122,24 @@ function runProgram() {
   function handleKeyUp(event) {
     // Player 1 key release
     switch (event.which) {
-      case KEY.LEFT:
-      case KEY.RIGHT:
+      case KEY.A:
+      case KEY.D:
         WALKER.speedX = 0;
         break;
-      case KEY.UP:
-      case KEY.DOWN:
+      case KEY.W:
+      case KEY.S:
         WALKER.speedY = 0;
         break;
     }
 
     // Player 2 key release;
     switch (event.which) {
-      case KEY.A:
-      case KEY.D:
+      case KEY.LEFT:
+      case KEY.RIGHT:
         WALKER2.speedX = 0;
         break;
-      case KEY.W:
-      case KEY.S:
+      case KEY.UP:
+      case KEY.DOWN:
         WALKER2.speedY = 0;
         break;
     }
@@ -199,13 +199,14 @@ function runProgram() {
 
   // Handles collisions between the square and switches "it" square if they touch
   function handleTag(w1, w2) {
-    if (w1.isIt && w1.x < (w2.x + w2.width) && (w1.x + w1.width) > w2.x && w1.y < (w2.y + w2.height) && (w1.y + w1.height) > w2.y) {
-      w1.isIt = false;
-      w2.isIt = true;
-      resetPos();
-    } else if (w2.isIt && w2.x < (w1.x + w1.width) && (w2.x + w2.width) > w1.x && w2.y < (w1.y + w1.height) && (w2.y + w2.height) > w1.y) {
-      w1.isIt = true;
-      w2.isIt = false;
+    if (w1.x < (w2.x + w2.width) && (w1.x + w1.width) > w2.x && w1.y < (w2.y + w2.height) && (w1.y + w1.height) > w2.y) {
+      if (w1.isIt) {
+        w1.isIt = false;
+        w2.isIt = true;
+      } else {
+        w1.isIt = true;
+        w2.isIt = false;
+      }
       resetPos();
     }
   }
