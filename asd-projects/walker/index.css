@@ -4,12 +4,13 @@ body {
 }
 
 #board {
-  width: 440px;
-  height: 440px;
+  width: 720px;
+  height: 720px;
   border: 1px solid white;
   border-radius: 10px;
   background-color: black;
   position: relative;
+  margin: auto;
 }
 
 #walker {
@@ -28,4 +29,16 @@ body {
   height: 50px;
   border-radius: 10px;
   position: absolute;
+}
+
+#it, #tags {
+  font-size: 40px;
+  color: white;
+  text-align: center;
+  margin: 20px auto 20px auto;
+  padding: 10px 0 10px 0;
+  width: 720px;
+  background-color: black;
+  border: 1px solid white;
+  border-radius: 10px;
 }

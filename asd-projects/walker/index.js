@@ -46,11 +46,6 @@ function runProgram() {
     defaultColor: 'teal',
   }
 
-  let walkerLeft = WALKER.x;
-  let walkerRight = WALKER.x + WALKER.width;
-  let walkerTop = WALKER.y;
-  let walkerBottom = WALKER.y + WALKER.height;
-
 
   // WALKER2 object holds data for the 2nd walker (x-position, y-position, speed along x-axis, speed along y-axis, id attribute, width, and height)
   const WALKER2 = {
@@ -70,6 +65,7 @@ function runProgram() {
   const interval = setInterval(newFrame, FRAMES_PER_SECOND_INTERVAL);   // execute newFrame every 0.0166 seconds (60 Frames per second)
   $(document).on('keydown', handleKeyDown);                             // event handler to listen for when a key is pressed and run handleKeyDown()
   $(document).on('keyup', handleKeyUp);                                 // event handler to listen for when a key is released and run handleKeyUp()
+
 
   ////////////////////////////////////////////////////////////////////////////////
   ///////////////////////// CORE LOGIC ///////////////////////////////////////////
@@ -91,16 +87,16 @@ function runProgram() {
     // Handles key input for player 1 (WALKER recognizes LEFT, RIGHT, UP, and DOWN)
     switch (event.which) {
       case KEY.LEFT:
-        WALKER.speedX = WALKER.isIt ? -3 : -5;
+        WALKER.speedX = WALKER.isIt ? -4 : -5;
         break;
       case KEY.RIGHT:
-        WALKER.speedX = WALKER.isIt ? 3 : 5;
+        WALKER.speedX = WALKER.isIt ? 4 : 5;
         break;
       case KEY.UP:
-        WALKER.speedY = WALKER.isIt ? -3 : -5;
+        WALKER.speedY = WALKER.isIt ? -4 : -5;
         break;
       case KEY.DOWN:
-        WALKER.speedY = WALKER.isIt ? 3 : 5;
+        WALKER.speedY = WALKER.isIt ? 4 : 5;
         break;
     }
 
@@ -108,16 +104,16 @@ function runProgram() {
     // Handles key input for player 2 (WALKER2 recognizes W, A, S, and D)
     switch (event.which) {
       case KEY.A:
-        WALKER2.speedX = WALKER2.isIt ? -3 : -5;
+        WALKER2.speedX = WALKER2.isIt ? -4 : -5;
         break;
       case KEY.D:
-        WALKER2.speedX = WALKER2.isIt ? 3 : 5;
+        WALKER2.speedX = WALKER2.isIt ? 4 : 5;
         break;
       case KEY.W:
-        WALKER2.speedY = WALKER2.isIt ? -3 : -5;
+        WALKER2.speedY = WALKER2.isIt ? -4 : -5;
         break;
       case KEY.S:
-        WALKER2.speedY = WALKER2.isIt ? 3 : 5;
+        WALKER2.speedY = WALKER2.isIt ? 4 : 5;
         break;
     }
   }
@@ -157,6 +153,7 @@ function runProgram() {
     repositionGameItem(walker);
     handleWallCollision(walker);
     handleIt(walker);
+    handleTag(WALKER, WALKER2);
     redrawGameItem(walker);
   }
 
@@ -194,44 +191,32 @@ function runProgram() {
   function handleIt(walker) {
     if (walker.isIt) {
       $(walker.id).css('background-color', 'red');
+      $('#it').text(walker.defaultColor + " square is it!")
     } else {
       $(walker.id).css('background-color', walker.defaultColor);
     }
-
-    handleTag();
   }
 
-  function handleTag() {
-    // if (WALKER.isIt && WALKER_SIDE.left < WALKER2_SIDE.right && WALKER_SIDE.right > WALKER2_SIDE.left && WALKER_SIDE.top < WALKER2_SIDE.bottom && WALKER_SIDE.bottom > WALKER2_SIDE.top) {
-    //   WALKER.isIt = false;
-    //   WALKER2.isIt = true;
-    //   resetPos();
-    // } else if (WALKER2.isIt && WALKER2_SIDE.left < WALKER_SIDE.right && WALKER2_SIDE.right > WALKER_SIDE.left && WALKER2_SIDE.top < WALKER_SIDE.bottom && WALKER2_SIDE.bottom > WALKER_SIDE.top) {
-    //   WALKER.isIt = true;
-    //   WALKER2.isIt = false;
-    //   resetPos();
-    // }
+  // Handles collisions between the square and switches "it" square if they touch
+  function handleTag(w1, w2) {
+    if (w1.isIt && w1.x < (w2.x + w2.width) && (w1.x + w1.width) > w2.x && w1.y < (w2.y + w2.height) && (w1.y + w1.height) > w2.y) {
+      w1.isIt = false;
+      w2.isIt = true;
+      resetPos();
+    } else if (w2.isIt && w2.x < (w1.x + w1.width) && (w2.x + w2.width) > w1.x && w2.y < (w1.y + w1.height) && (w2.y + w2.height) > w1.y) {
+      w1.isIt = true;
+      w2.isIt = false;
+      resetPos();
+    }
   }
 
+  // Resets the positions of the squares when tagged
   function resetPos() {
     WALKER.x = 50;
     WALKER.y = 50;
     WALKER2.x = WALLS.RIGHT - 100;
-    WALKER2.y = WALLS.BOTTOM - 100
+    WALKER2.y = WALLS.BOTTOM - 100;
   }
-
-  // function handleClick(walker) {
-  //   if (!walker.isIt) {
-  //     $(walker.id).on('click', {id: walker.id}, changeColor);
-  //   }
-  // }
-
-  // function changeColor(walker) {
-  //   var randomColor = "#000000".replace(/0/g, function () {
-  //     return (~~(Math.random() * 16)).toString(16);
-  //   });
-  //   $(walker.data.id).css('background-color', randomColor);
-  // }
 
   function endGame() {
     // stop the interval timer
