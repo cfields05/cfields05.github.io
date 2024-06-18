@@ -13,6 +13,16 @@ body > div {
   top: 350px;
 }
 
+#filter-choice {
+  position: relative;
+  top: 400px;
+}
+
+#filters, #includeBackground {
+  display: block;
+  margin: 10px auto 20px 15px;
+}
+
 button {
   width: 120px;
   padding: 5px;
