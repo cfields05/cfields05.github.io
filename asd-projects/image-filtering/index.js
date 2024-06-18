@@ -23,6 +23,7 @@ function applyAndRender() {
   const filter = $('#filters option:selected').val();
   const includeBG = $('#includeBackground option:selected').val();
 
+
   if (includeBG === 'true') {
     switch (filter) {
       case 'reddify':
@@ -33,6 +34,9 @@ function applyAndRender() {
         break;
       case 'increaseGreenByBlue':
         applyFilter(increaseGreenByBlue);
+        break;
+      case 'smudge':
+        smudge();
         break;
     }
   } else {
@@ -45,6 +49,9 @@ function applyAndRender() {
         break;
       case 'increaseGreenByBlue':
         applyFilterNoBackground(increaseGreenByBlue);
+        break;
+      case 'smudge':
+        smudgeNoBG();
         break;
     }
   }
@@ -115,3 +122,48 @@ function increaseGreenByBlue(color) {
 }
 
 // CHALLENGE code goes below here
+
+function smudge() {
+  for (let i = 0; i < image.length; i++) {
+    const row = image[i];
+    for (let j = 0; j < row.length - 1; j++) {
+      let pix = row[j];
+      let altPix = row[j + 1];
+      let pixNum = rgbStringToArray(pix);
+      let altPixNum = rgbStringToArray(altPix);
+      for (let x = 0; x < pixNum.length; x++) {
+        if (altPixNum[x] >= pixNum[x]) {
+          altPixNum[x] -= (Math.abs(altPixNum[x] - pixNum[x]) * 0.1);
+        } else {
+          altPixNum[x] += (Math.abs(pixNum[x] - altPixNum[x]) * 0.1);
+        }
+      }
+      altPix = rgbArrayToString(altPixNum);
+      row[j + 1] = altPix;
+    }
+  }
+}
+
+function smudgeNoBG() {
+  const backgroundColor = image[0][0];
+  for (let i = 0; i < image.length; i++) {
+    const row = image[i];
+    for (let j = 0; j < row.length - 1; j++) {
+      let pix = row[j];
+      let altPix = row[j + 1];
+      let pixNum = rgbStringToArray(pix);
+      let altPixNum = rgbStringToArray(altPix);
+      if (pix !== backgroundColor && altPix !== backgroundColor) {
+        for (let x = 0; x < pixNum.length; x++) {
+          if (altPixNum[x] >= pixNum[x]) {
+            altPixNum[x] -= (Math.abs(altPixNum[x] - pixNum[x]) * 0.1);
+          } else {
+            altPixNum[x] += (Math.abs(pixNum[x] - altPixNum[x]) * 0.1);
+          }
+        }
+        altPix = rgbArrayToString(altPixNum);
+        row[j + 1] = altPix;
+      }
+    }
+  }
+}
