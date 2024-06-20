@@ -1,10 +1,3 @@
-$(document).ready(function () {
-  // const input = {
-  //   filter: $('#filters option:selected').val(),
-  //   includeBG: $('#includeBackground option:selected').val(),
-  // }
-  // console.log(input);
-});
 
 // set the square size (must match the CSS)
 const SQUARE_SIZE = 20;

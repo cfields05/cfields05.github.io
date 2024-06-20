@@ -18,7 +18,7 @@ body > div {
   top: 400px;
 }
 
-#filters, #includeBackground {
+#filters, #includeBackground, #smudgeDirection {
   display: block;
   margin: 10px auto 20px 15px;
 }
