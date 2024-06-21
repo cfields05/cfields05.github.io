@@ -125,10 +125,10 @@ function increaseGreenByBlue(color) {
 
 function smudge() {
   const smudgeDirection = $('#smudgeDirection option:selected').val();
-  for (let i = 0; i < image.length - 1; i++) {
+  for (let i = 0; i < image.length; i++) {
     const row = {
       default: image[i],
-      down: image[i + 1],
+      down: (i < image.length - 1) ? image[i + 1] : image[i],
     };
 
     for (let j = 0; j < row.default.length - 1; j++) {
@@ -211,23 +211,88 @@ function smudge() {
 
 function smudgeNoBG() {
   const backgroundColor = image[0][0];
+  const smudgeDirection = $('#smudgeDirection option:selected').val();
   for (let i = 0; i < image.length; i++) {
-    const row = image[i];
-    for (let j = 0; j < row.length - 1; j++) {
-      let pix = row[j];
-      let altPix = row[j + 1];
+    const row = {
+      default: image[i],
+      down: (i < image.length - 1) ? image[i + 1] : image[i],
+    };
+
+    for (let j = 0; j < row.default.length - 1; j++) {
+      let pix;
+      let altPix;
+
+      // Determine pix & altPix based on direction
+      switch (smudgeDirection) {
+        case 'left':
+          pix = row.default[j + 1];
+          altPix = row.default[j];
+          break;
+        case 'right':
+          pix = row.default[j];
+          altPix = row.default[j + 1];
+          break;
+        case 'up':
+          pix = row.down[j];
+          altPix = row.default[j];
+          break;
+        case 'down':
+          pix = row.default[j];
+          altPix = row.down[j];
+          break;
+      }
+
       let pixNum = rgbStringToArray(pix);
       let altPixNum = rgbStringToArray(altPix);
+
+      // Smudge in the chosen direction without affecting background tiles
       if (pix !== backgroundColor && altPix !== backgroundColor) {
-        for (let x = 0; x < pixNum.length; x++) {
-          if (altPixNum[x] >= pixNum[x]) {
-            altPixNum[x] -= (Math.abs(altPixNum[x] - pixNum[x]) * 0.1);
-          } else {
-            altPixNum[x] += (Math.abs(pixNum[x] - altPixNum[x]) * 0.1);
-          }
+        switch (smudgeDirection) {
+          case 'left':
+            for (let x = 0; x < pixNum.length; x++) {
+              if (altPixNum[x] >= pixNum[x]) {
+                altPixNum[x] -= (Math.abs(altPixNum[x] - pixNum[x]) * 0.1);
+              } else {
+                altPixNum[x] += (Math.abs(pixNum[x] - altPixNum[x]) * 0.1);
+              }
+            }
+            altPix = rgbArrayToString(altPixNum);
+            row.default[j] = altPix;
+            break;
+          case 'right':
+            for (let x = 0; x < pixNum.length; x++) {
+              if (altPixNum[x] >= pixNum[x]) {
+                altPixNum[x] -= (Math.abs(altPixNum[x] - pixNum[x]) * 0.1);
+              } else {
+                altPixNum[x] += (Math.abs(pixNum[x] - altPixNum[x]) * 0.1);
+              }
+            }
+            altPix = rgbArrayToString(altPixNum);
+            row.default[j + 1] = altPix;
+            break;
+          case 'up':
+            for (let x = 0; x < pixNum.length; x++) {
+              if (altPixNum[x] >= pixNum[x]) {
+                altPixNum[x] -= (Math.abs(altPixNum[x] - pixNum[x]) * 0.1);
+              } else {
+                altPixNum[x] += (Math.abs(pixNum[x] - altPixNum[x]) * 0.1);
+              }
+            }
+            altPix = rgbArrayToString(altPixNum);
+            row.default[j] = altPix;
+            break;
+          case 'down':
+            for (let x = 0; x < pixNum.length; x++) {
+              if (altPixNum[x] >= pixNum[x]) {
+                altPixNum[x] -= (Math.abs(altPixNum[x] - pixNum[x]) * 0.1);
+              } else {
+                altPixNum[x] += (Math.abs(pixNum[x] - altPixNum[x]) * 0.1);
+              }
+            }
+            altPix = rgbArrayToString(altPixNum);
+            row.down[j] = altPix;
+            break;
         }
-        altPix = rgbArrayToString(altPixNum);
-        row[j + 1] = altPix;
       }
     }
   }
