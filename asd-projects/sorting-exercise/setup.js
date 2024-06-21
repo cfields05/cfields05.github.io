@@ -5,11 +5,31 @@
 /////////////////////////////////////////////////
 // THE CONSTANTS BELOW MAY BE ALTERED FOR EXPERIMENTATION PURPOSES
 
-// set the delay between each sort step
-const SLEEP_AMOUNT = 500;
-
 // set the max number of squares
-const MAX_SQUARES = 16;
+let MAX_SQUARES = prompt("How many rows would you like to sort? Enter a number between 16 and 1000.");
+
+while (MAX_SQUARES < 16 || MAX_SQUARES > 1000 || isNaN(MAX_SQUARES)) {
+    if (MAX_SQUARES < 16) {
+        MAX_SQUARES = prompt("Less than 16 rows is not enough to properly show the sorting algorithm. How many rows would you like to sort? Enter a number between 16 and 1000.");
+    } else if (MAX_SQUARES > 1000) {
+        MAX_SQUARES = prompt("More than 1000 rows could cause the program to lag or break down. How many rows would you like to sort? Enter a number between 16 and 1000.");
+    } else if (isNaN(MAX_SQUARES)) {
+        MAX_SQUARES = prompt("You can't have " + MAX_SQUARES + " rows... How many rows would you like to sort? Enter a number between 16 and 1000.");
+    }
+}
+
+// set the delay between each sort step
+let SLEEP_AMOUNT = 0;
+
+if (MAX_SQUARES <= 50) {
+    SLEEP_AMOUNT = 500;
+} else if (MAX_SQUARES <= 100) {
+    SLEEP_AMOUNT = 200;
+} else if (MAX_SQUARES <= 500) {
+    SLEEP_AMOUNT = 100;
+} else {
+    SLEEP_AMOUNT = 0;
+}
 
 // set constants for pseudo-random number generation
 const SEED = 2;
