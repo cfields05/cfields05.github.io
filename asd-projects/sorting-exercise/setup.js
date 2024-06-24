@@ -25,8 +25,10 @@ if (MAX_SQUARES <= 50) {
     SLEEP_AMOUNT = 500;
 } else if (MAX_SQUARES <= 100) {
     SLEEP_AMOUNT = 200;
-} else if (MAX_SQUARES <= 500) {
+} else if (MAX_SQUARES <= 300) {
     SLEEP_AMOUNT = 100;
+} else if (MAX_SQUARES <= 500) {
+    SLEEP_AMOUNT = 50;
 } else {
     SLEEP_AMOUNT = 0;
 }
