@@ -33,7 +33,8 @@ function runProgram() {
     BOTTOM: $('#board').height(),
   }
 
-  // WALKER object holds data for the walker (x-position, y-position, speed along x-axis, speed along y-axis, id attribute, width, and height)
+  // WALKER object holds data for the walker
+  // WALKER x-position, y-position, speedX, speedY, id, width, height, default color, and wether or not the walker is 'it'
   const WALKER = {
     x: 50,
     y: 50,
@@ -47,7 +48,8 @@ function runProgram() {
   }
 
 
-  // WALKER2 object holds data for the 2nd walker (x-position, y-position, speed along x-axis, speed along y-axis, id attribute, width, and height)
+  // WALKER2 object holds data for the 2nd walker
+  // WALKER2 x-position, y-position, speedX, speedY, id, width, height, default color, and wether or not the walker is 'it'
   const WALKER2 = {
     x: WALLS.RIGHT - 100,
     y: WALLS.BOTTOM - 100,
@@ -148,7 +150,7 @@ function runProgram() {
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
-  // Runs all 3 functions for rendering and moving the walker as well as wall collisions
+  // Runs all 5 functions for rendering and moving the walker as well as wall collisions and tagging each other
   function runAll(walker) {
     repositionGameItem(walker);
     handleWallCollision(walker);

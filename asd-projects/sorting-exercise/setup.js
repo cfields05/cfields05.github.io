@@ -9,28 +9,28 @@
 let MAX_SQUARES = prompt("How many rows would you like to sort? Enter a number between 16 and 1000.");
 
 while (MAX_SQUARES < 16 || MAX_SQUARES > 1000 || isNaN(MAX_SQUARES)) {
-    if (MAX_SQUARES < 16) {
-        MAX_SQUARES = prompt("Less than 16 rows is not enough to properly show the sorting algorithm. How many rows would you like to sort? Enter a number between 16 and 1000.");
-    } else if (MAX_SQUARES > 1000) {
-        MAX_SQUARES = prompt("More than 1000 rows could cause the program to lag or break down. How many rows would you like to sort? Enter a number between 16 and 1000.");
-    } else if (isNaN(MAX_SQUARES)) {
-        MAX_SQUARES = prompt("You can't have " + MAX_SQUARES + " rows... How many rows would you like to sort? Enter a number between 16 and 1000.");
-    }
+  if (MAX_SQUARES < 16) {
+    MAX_SQUARES = prompt("Less than 16 rows is not enough to properly show the sorting algorithm. How many rows would you like to sort? Enter a number between 16 and 1000.");
+  } else if (MAX_SQUARES > 1000) {
+    MAX_SQUARES = prompt("More than 1000 rows could cause the program to lag or break down. How many rows would you like to sort? Enter a number between 16 and 1000.");
+  } else if (isNaN(MAX_SQUARES)) {
+    MAX_SQUARES = prompt("You can't have " + MAX_SQUARES + " rows... How many rows would you like to sort? Enter a number between 16 and 1000.");
+  }
 }
 
 // set the delay between each sort step
 let SLEEP_AMOUNT = 0;
 
 if (MAX_SQUARES <= 50) {
-    SLEEP_AMOUNT = 500;
+  SLEEP_AMOUNT = 500;
 } else if (MAX_SQUARES <= 100) {
-    SLEEP_AMOUNT = 200;
+  SLEEP_AMOUNT = 200;
 } else if (MAX_SQUARES <= 300) {
-    SLEEP_AMOUNT = 100;
+  SLEEP_AMOUNT = 100;
 } else if (MAX_SQUARES <= 500) {
-    SLEEP_AMOUNT = 50;
+  SLEEP_AMOUNT = 50;
 } else {
-    SLEEP_AMOUNT = 0;
+  SLEEP_AMOUNT = 0;
 }
 
 // set constants for pseudo-random number generation
@@ -43,9 +43,9 @@ const INCREASE = 7181930;
 // ALL CONSTANTS BELOW HERE SHOULD NOT BE ALTERED
 
 // values related to drawing the sorting grid
-const IMAGE_SIZE = 256;                         // pixels
-const MAX_SQUARE_WIDTH = 25;                    // percentage of width
-const MAX_SQUARE_HEIGHT = 1/MAX_SQUARES*100;    // percentage of height
+const IMAGE_SIZE = 256;                             // pixels
+const MAX_SQUARE_WIDTH = 25;                        // percentage of width
+const MAX_SQUARE_HEIGHT = 1 / MAX_SQUARES * 100;    // percentage of height
 
 // define the arrays that will store all created HTML elements
 const bubbleList = [];
@@ -76,16 +76,16 @@ var bubbleSort, quickSort;
 ///////////////// Run the setup /////////////////
 /////////////////////////////////////////////////
 
-$(document).ready(function(){
-    // resize the containers to fit everything
-    let squareHeight = $(bubbleId).width() * (Math.min((1 / MAX_SQUARES * 100), MAX_SQUARE_WIDTH)/100);
-    
-    $(bubbleId).height(squareHeight*MAX_SQUARES);
-    $(quickId).height(squareHeight*MAX_SQUARES);
-    
-    // create the two lists and all elements
-    generateList(bubbleList, bubbleId, bubbleClass, bubbleElementBaseId);
-    generateList(quickList, quickId, quickClass, quickElementBaseId);
+$(document).ready(function () {
+  // resize the containers to fit everything
+  let squareHeight = $(bubbleId).width() * (Math.min((1 / MAX_SQUARES * 100), MAX_SQUARE_WIDTH) / 100);
+
+  $(bubbleId).height(squareHeight * MAX_SQUARES);
+  $(quickId).height(squareHeight * MAX_SQUARES);
+
+  // create the two lists and all elements
+  generateList(bubbleList, bubbleId, bubbleClass, bubbleElementBaseId);
+  generateList(quickList, quickId, quickClass, quickElementBaseId);
 });
 
 
@@ -94,57 +94,57 @@ $(document).ready(function(){
 /////////////////////////////////////////////////
 
 // generate all elements in a list
-function generateList(list, listId, cssClass, baseId){
-    let numbers = [];
+function generateList(list, listId, cssClass, baseId) {
+  let numbers = [];
 
-    // start by making an array of numbers
-    // this will be used to keep track of which values have already
-    // been assigned to created elements
-    for (var i = 1; i <= MAX_SQUARES; i++){
-        numbers.push(i);
-    }
+  // start by making an array of numbers
+  // this will be used to keep track of which values have already
+  // been assigned to created elements
+  for (var i = 1; i <= MAX_SQUARES; i++) {
+    numbers.push(i);
+  }
 
-    // next, create the elements "randomly"
-    let nextIndex = SEED;
-    for (var i = 0; i < MAX_SQUARES; i++){
-        // choose the next element to create randomly (by grabbing an unused value for the element)
-        nextIndex = chooseIndex(nextIndex, numbers);
+  // next, create the elements "randomly"
+  let nextIndex = SEED;
+  for (var i = 0; i < MAX_SQUARES; i++) {
+    // choose the next element to create randomly (by grabbing an unused value for the element)
+    nextIndex = chooseIndex(nextIndex, numbers);
 
-        // create the element
-        createAndAddElement(list, listId, cssClass, baseId, numbers[nextIndex]);
+    // create the element
+    createAndAddElement(list, listId, cssClass, baseId, numbers[nextIndex]);
 
-        // remove the chosen value from the list of numbers;
-        // this way, every created element will have a unique value associated with it
-        numbers.splice(nextIndex, 1);
-    }
+    // remove the chosen value from the list of numbers;
+    // this way, every created element will have a unique value associated with it
+    numbers.splice(nextIndex, 1);
+  }
 }
 
 // choose a "random" index
-function chooseIndex(startIndex, array){
-    return (startIndex * FACTOR + INCREASE) % array.length;
+function chooseIndex(startIndex, array) {
+  return (startIndex * FACTOR + INCREASE) % array.length;
 }
 
 // create an element and add it to the specified list of elements
-function createAndAddElement(list, listId, cssClass, baseId, value){
-    let newElement = makeElement(baseId + value, value);
+function createAndAddElement(list, listId, cssClass, baseId, value) {
+  let newElement = makeElement(baseId + value, value);
 
-    let offset = list.length / MAX_SQUARES * 100;
-    list.push(newElement);
-    
-    $("<div>").addClass(cssClass)
-              .addClass(elementClass)
-              .attr("id", baseId+value)
-              .css("height", MAX_SQUARE_HEIGHT + "%")
-              .css("width", MAX_SQUARE_HEIGHT * value + "%")
-              .css("background-size", 100/value + '% '+ 100 + '%')
-              .css("top", offset + "%")
-              .appendTo(listId);
+  let offset = list.length / MAX_SQUARES * 100;
+  list.push(newElement);
+
+  $("<div>").addClass(cssClass)
+    .addClass(elementClass)
+    .attr("id", baseId + value)
+    .css("height", MAX_SQUARE_HEIGHT + "%")
+    .css("width", MAX_SQUARE_HEIGHT * value + "%")
+    .css("background-size", 100 / value + '% ' + 100 + '%')
+    .css("top", offset + "%")
+    .appendTo(listId);
 }
 
 // factory function for elements
-function makeElement(id, value){
-    return {
-        id: "#" + id,
-        value: value
-    };
+function makeElement(id, value) {
+  return {
+    id: "#" + id,
+    value: value
+  };
 }
