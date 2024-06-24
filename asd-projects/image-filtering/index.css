@@ -13,6 +13,11 @@ body > div {
   top: 350px;
 }
 
+#auto-button {
+  position: relative;
+  top: 375px;
+}
+
 #filter-choice {
   position: relative;
   top: 400px;
@@ -35,4 +40,13 @@ button {
 
 #reset {
   background: red;
+}
+
+#autoApply {
+  background: lightskyblue;
+}
+
+#applyNum {
+  width: 110px;
+  margin-left: 12px;
 }

@@ -15,6 +15,10 @@
       <button id="apply">Apply Filter</button>
       <button id="reset">Reset Image</button>
     </div>
+    <div id="auto-button">
+      <button id="autoApply">Auto Apply</button>
+      <input type="number" id="applyNum" name="applyNum" />
+    </div>
     <div id="filter-choice">
       <label for="filters">Choose a filter:</label>
       <select id="filters" name="filters">
@@ -28,7 +32,7 @@
         <option value="true">Yes!</option>
         <option value="false">No!</option>
       </select>
-      <label for="smudgeDirection">Smudge Direction (if applicable):</label>
+      <label for="smudgeDirection" id="smudgeLabel">Smudge Direction:</label>
       <select id="smudgeDirection" name="smudgeDirection">
         <option value="left">Left!</option>
         <option value="right">Right!</option>

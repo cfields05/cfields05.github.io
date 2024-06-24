@@ -2,8 +2,23 @@
 // as soon as the page loads.
 $(document).ready(function () {
   render($("#display"), image);
+  $('#smudgeDirection').hide();
+  $('#smudgeLabel').hide();
   $("#apply").on("click", applyAndRender);
   $("#reset").on("click", resetAndRender);
+  $("#autoApply").on("click", autoApply);
+  $("#filters").change(
+    function () {
+      const filter = $('#filters option:selected').val();
+      if (filter === 'smudge') {
+        $('#smudgeLabel').fadeIn(500);
+        $('#smudgeDirection').fadeIn(500);
+      } else {
+        $('#smudgeLabel').fadeOut(500);
+        $('#smudgeDirection').fadeOut(500);
+      }
+    }
+  )
 });
 
 /////////////////////////////////////////////////////////
@@ -58,6 +73,24 @@ function applyAndRender() {
 
   // do not change the below line of code
   render($("#display"), image);
+}
+
+// Automatically apply a filter a set number of times dependent on user input
+function autoApply() {
+  const autoNum = $('#applyNum').val();
+  let num = 0;
+
+  const interval = setInterval(
+    function () {
+      if (num <= autoNum) {
+        applyAndRender();
+        num++;
+      } else {
+        clearInterval(interval);
+      }
+    },
+    60
+  );
 }
 
 /////////////////////////////////////////////////////////
