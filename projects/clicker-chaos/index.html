@@ -64,6 +64,11 @@
 
         </div> -->
     </div>
+    <div class="news-box">
+        <div class="inner-box">
+            <p id="text">Breaking News: Insert Fun Facts Here</p>
+        </div>
+    </div>
     <!-- <div class="credits">
 
             </div> -->
@@ -73,46 +78,62 @@
         var mana = 0;
         var manaPerSecond = 0;
 
+        // news array holds messages to display in the news box
+        // CHANGE NEWS STRINGS TO FUNCTIONS FOR MODULAR MESSAGES
+        // Template literals (google)
+        const news = [
+            "Prices of cursed crystals skyrocketing!",
+            "Mass recall of magic runes due to spontaneous combustion!",
+            "Local wizard declares computers objectively inferior to magic!",
+            "“Bippity Boppity Boo,” claims local crazy woman!"
+        ];
+
+        // “” quotation marks (for copying later)
+
+        // Each autoclicker obj stores a mana per second value, the amount owned (starting at 0), and the base cost of the item
         var blackCat = {
-            mps: 1, // each black cat will generate one mana per second
-            numberOwned: 0, // start with no black cats
-            baseCost: 50, // base cost is 50 points of mana
+            mps: 1,                 // each black cat will generate one mana per second
+            numberOwned: 0,         // start with no black cats
+            baseCost: 50,           // base cost is 50 points of mana
         };
 
         var magicWand = {
-            mps: 10, // each magic wand will generate ten mana per second
-            numberOwned: 0, // start with no magic wands
-            baseCost: 200, // base cost is 200 points of mana
+            mps: 10,                // each magic wand will generate ten mana per second
+            numberOwned: 0,         // start with no magic wands
+            baseCost: 200,          // base cost is 200 points of mana
         };
 
         var magicStaff = {
-            mps: 25, // each magic staff will generate twenty-five mana per second
-            numberOwned: 0, // start with no magic staves
-            baseCost: 500, // base cost is 500 points of mana
+            mps: 25,                // each magic staff will generate twenty-five mana per second
+            numberOwned: 0,         // start with no magic staves
+            baseCost: 500,          // base cost is 500 points of mana
         }
 
         var magicBroomstick = {
-            mps: 50, // each magic broomstick will generate fifty mana per second
-            numberOwned: 0, // start with no magic broomsticks
-            baseCost: 1000, // base cost is 1000 points of mana
+            mps: 50,                // each magic broomstick will generate fifty mana per second
+            numberOwned: 0,         // start with no magic broomsticks
+            baseCost: 1000,         // base cost is 1000 points of mana
         }
 
         var magicSpellbook = {
-            mps: 100, // each magic spellbook will generate one hundred mana per second
-            numberOwned: 0, // start with no magic broomsticks
-            baseCost: 1600, // base cost is 1600 points of mana
+            mps: 100,               // each magic spellbook will generate one hundred mana per second
+            numberOwned: 0,         // start with no magic broomsticks
+            baseCost: 1600,         // base cost is 1600 points of mana
         }
 
         var wizardHat = {
-            mps: 200, // each super cool wizard hat will generate two hundred mana per second
-            numberOwned: 0, // start with no super cool wizard hats
-            baseCost: 2500, // base cost is 2500 points of mana
+            mps: 200,               // each super cool wizard hat will generate two hundred mana per second
+            numberOwned: 0,         // start with no super cool wizard hats
+            baseCost: 2500,         // base cost is 2500 points of mana
         }
 
         // Core Functionality
-        setInterval(addAutoMana, 1000);
+        newsMessage();
+        setInterval(newsMessage, 10_000);
+        setInterval(addAutoMana, 1_000);
 
         // Event/Click Listeners
+        // ADD FUNCTION TO HANDLE CLICKING ANY BUTTON FOR PURCHASE
         $("#clicker-image").on("click", generateMana);
         $("#purchase-cat").on("click", purchaseBlackCat);
         $("#purchase-wand").on("click", purchaseMagicWand);
@@ -122,11 +143,14 @@
         $("#purchase-hat").on("click", purchaseWizardHat);
 
         // Functions
+        // Increases mana and updates text when orb is clicked
         function generateMana() {
             mana++;
             $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
         }
 
+        // ADD FUNCTION TO HANDLE ANY ITEM PURCHASED
+        // Handles purchasing of black cats and increases mana per second
         function purchaseBlackCat() {
             var cost = Math.ceil(blackCat.baseCost * Math.pow(1.1, blackCat.numberOwned));
 
@@ -146,6 +170,7 @@
             $("#cat-cost").text("Cost: " + newCost + " mana");
         }
 
+        // Handles purchasing of magic wands and increases mana per second
         function purchaseMagicWand() {
             var cost = Math.ceil(magicWand.baseCost * Math.pow(1.1, magicWand.numberOwned));
 
@@ -165,6 +190,7 @@
             $("#wand-cost").text("Cost: " + newCost + " mana");
         }
 
+        // Handles purchasing of magic staves and increases mana per second
         function purchaseMagicStaff() {
             var cost = Math.ceil(magicStaff.baseCost * Math.pow(1.1, magicStaff.numberOwned));
 
@@ -184,6 +210,7 @@
             $("#staff-cost").text("Cost: " + newCost + " mana");
         }
 
+        // Handles purchasing of broomsticks and increases mana per second
         function purchaseBroomstick() {
             var cost = Math.ceil(magicBroomstick.baseCost * Math.pow(1.1, magicBroomstick.numberOwned));
 
@@ -203,6 +230,7 @@
             $("#broom-cost").text("Cost: " + newCost + " mana");
         }
 
+        // Handles purchasing of spellbooks and increases mana per second
         function purchaseSpellbook() {
             var cost = Math.ceil(magicSpellbook.baseCost * Math.pow(1.1, magicSpellbook.numberOwned));
 
@@ -222,6 +250,7 @@
             $("#book-cost").text("Cost: " + newCost + " mana");
         }
 
+        // Handles purchasing of super cool wizard hats and increases mana per second
         function purchaseWizardHat() {
             var cost = Math.ceil(wizardHat.baseCost * Math.pow(1.1, wizardHat.numberOwned));
 
@@ -241,9 +270,22 @@
             $("#hat-cost").text("Cost: " + newCost + " mana");
         }
 
+        // Handles automatically increasing your mana
         function addAutoMana() {
             mana += manaPerSecond;
             $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
+        }
+
+        // Randomly chooses one of the news messages and displays them
+        function newsMessage() {
+            const message = Math.floor(Math.random() * news.length);
+            // Fade out animation
+            $('#text').finish().fadeTo(300, 0, function () {
+                // Update text
+                $("#text").text("Breaking News: " + news[message]);
+                // Fade back in again
+                $('#text').finish().fadeTo(300, 1);
+            });
         }
 
         /* All code above here */

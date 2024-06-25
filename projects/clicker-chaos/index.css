@@ -76,6 +76,31 @@ button {
     font-size: 20px;
 }
 
+.news-box {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: stretch;
+    background-color: rgb(146, 78, 219);
+    border-radius: 20px;
+}
+
+.inner-box {
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(245, 238, 219);
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 20px;
+    flex-grow: 1;
+}
+
+#text {
+    padding-left: 20px;
+}
+
 /* .credits {
     background-color: lightskyblue;
 } */
