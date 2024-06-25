@@ -53,6 +53,9 @@ function applyAndRender() {
       case 'invert':
         applyFilter(invert);
         break;
+      case 'grayscale':
+        applyFilter(grayscale);
+        break;
       case 'smudge':
         smudge();
         break;
@@ -70,6 +73,9 @@ function applyAndRender() {
         break;
       case 'invert':
         applyFilterNoBackground(invert);
+        break;
+      case 'grayscale':
+        applyFilterNoBackground(grayscale);
         break;
       case 'smudge':
         smudgeNoBG();
@@ -104,6 +110,7 @@ function autoApply() {
 /////////////////////////////////////////////////////////
 
 // TODO 1, 2 & 4: Create the applyFilter function here
+
 // Applies filter using nested loops by sorting through each index of image, then each index of those values and changing their RGB values
 function applyFilter(filterFunction) {
   for (let i = 0; i < image.length; i++) {
@@ -119,6 +126,8 @@ function applyFilter(filterFunction) {
 }
 
 // TODO 7: Create the applyFilterNoBackground function
+
+// Applies a given filter while excluding the background color
 function applyFilterNoBackground(filterFunction) {
   const backgroundColor = image[0][0];
   for (let i = 0; i < image.length; i++) {
@@ -136,6 +145,7 @@ function applyFilterNoBackground(filterFunction) {
 }
 
 // TODO 5: Create the keepInBounds function
+
 // Ensures that numbers used for RGB values are never less than 0 or more than 255
 function keepInBounds(colorNum) {
   colorNum = Math.min(colorNum, 255);
@@ -144,12 +154,14 @@ function keepInBounds(colorNum) {
 }
 
 // TODO 3: Create reddify function
+
 // Tints the image red by setting red value to 200
 function reddify(color) {
   color[RED] = 200;
 }
 
 // TODO 6: Create more filter functions
+
 // Decreases the value of blue in the image by 50 to a minimum of 0
 function decreaseBlue(color) {
   color[BLUE] = keepInBounds(color[BLUE] - 50);
@@ -160,15 +172,25 @@ function increaseGreenByBlue(color) {
   color[GREEN] = keepInBounds(color[GREEN] + color[BLUE]);
 }
 
-// Inverts the colors of the image (was made by accident when creating smudge filter)
+// Inverts the colors of the image
+// (was originally made by accident when creating smudge filter, though the math is different for the filter than for the original mistake)
 function invert(color) {
   color[RED] = 255 - color[RED];
   color[GREEN] = 255 - color[GREEN];
   color[BLUE] = 255 - color[BLUE];
 }
 
+// Converts the image to grayscale
+function grayscale(color) {
+  const ntscGrayscale = 0.299 * color[RED] + 0.587 * color[GREEN] + 0.114 * color[BLUE];
+  color[RED] = ntscGrayscale;
+  color[GREEN] = ntscGrayscale;
+  color[BLUE] = ntscGrayscale;
+}
+
 // CHALLENGE code goes below here
 
+// Smudges the image in the chosen direction
 function smudge() {
   const smudgeDirection = $('#smudgeDirection option:selected').val();
   for (let i = 0; i < image.length; i++) {
@@ -255,6 +277,8 @@ function smudge() {
   }
 }
 
+
+// Smudges the image without affecting the background
 function smudgeNoBG() {
   const backgroundColor = image[0][0];
   const smudgeDirection = $('#smudgeDirection option:selected').val();
