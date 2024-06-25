@@ -50,6 +50,9 @@ function applyAndRender() {
       case 'increaseGreenByBlue':
         applyFilter(increaseGreenByBlue);
         break;
+      case 'invert':
+        applyFilter(invert);
+        break;
       case 'smudge':
         smudge();
         break;
@@ -64,6 +67,9 @@ function applyAndRender() {
         break;
       case 'increaseGreenByBlue':
         applyFilterNoBackground(increaseGreenByBlue);
+        break;
+      case 'invert':
+        applyFilterNoBackground(invert);
         break;
       case 'smudge':
         smudgeNoBG();
@@ -152,6 +158,13 @@ function decreaseBlue(color) {
 // Increases the value of green in the image by the value of blue to a maximum of 255
 function increaseGreenByBlue(color) {
   color[GREEN] = keepInBounds(color[GREEN] + color[BLUE]);
+}
+
+// Inverts the colors of the image (was made by accident when creating smudge filter)
+function invert(color) {
+  color[RED] = 255 - color[RED];
+  color[GREEN] = 255 - color[GREEN];
+  color[BLUE] = 255 - color[BLUE];
 }
 
 // CHALLENGE code goes below here
