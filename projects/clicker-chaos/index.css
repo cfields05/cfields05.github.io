@@ -65,6 +65,10 @@ button {
     padding-right: 25px;
 }
 
+.sell {
+    margin-left: 15px;
+}
+
 #mana-amount {
     font-weight: bold;
 }

@@ -3,6 +3,7 @@
 let mana = 0;
 let manaPerSecond = 0;
 const newsTimer = 5_000;
+const priceIncrease = 1.15;
 
 // items array holds a list of items to be used in news generation
 const items = [
@@ -13,18 +14,19 @@ const items = [
     "magic wands",
     "spellbooks",
     "cast iron cauldrons",
-    "broomsticks"
-]
+    "broomsticks",
+];
 
 // people array holds a list of random people to be used in news generation
 const people = [
     "local wizard",
-    "neighborhood crazy woman",
+    "neighborhood crazy lady",
     "famous archmage",
     "noseless warlock",
     "the boy who lived",
     "know-it-all witch",
-]
+    "fairy godmother",
+];
 
 // phrases array holds a list of phrases to be used in news generation
 const phrases = [
@@ -34,15 +36,24 @@ const phrases = [
     "Dragons aren't even that cool anyway",
     "Shouldn't have said that. Should NOT have said that",
     "It's levi-OH-sa, not levio-SAH",
-]
+];
+
+// questions holds a list of questions to be used in news generation
+const questions = [
+    "What IS the deal with airline food, anyway?",
+    "How exactly does a broom generate mana?",
+    "Have you seen Fantasia?",
+];
 
 // news array creates random messages to be displayed in the news bar
 const news = [
-    () => `Prices of new ${randomIndex(items)} skyrocketing!`,
+    () => `Prices of name-brand ${randomIndex(items)} skyrocketing!`,
     () => `Mass recall of famous ${randomIndex(items)} due to spontaneous combustion!`,
     () => `“${randomIndex(phrases)},” claims ${randomIndex(people)}!`,
     () => `${capitalize(people)} declares computers objectively inferior to magic!`,
     () => `Enchanted ${randomIndex(items)} said to reach speeds of 350 miles per hour!`,
+    () => `Popular ${randomIndex(items)} faulty, states ${randomIndex(people)}!`,
+    () => `“${randomIndex(questions)},” asks ${randomIndex(people)}.`,
 ];
 
 // “” quotation marks (for copying later)
@@ -74,12 +85,20 @@ setInterval(addAutoMana, 1_000);
 
 // Event/Click Listeners
 $("#clicker-image").on("click", generateMana);
+
 $("#purchase-cat").on("click", {obj: blackCat}, purchase);
 $("#purchase-wand").on("click", {obj: magicWand}, purchase);
 $("#purchase-staff").on("click", {obj: magicStaff}, purchase);
 $("#purchase-broom").on("click", {obj: magicBroomstick}, purchase);
 $("#purchase-book").on("click", {obj: magicSpellbook}, purchase);
 $("#purchase-hat").on("click", {obj: wizardHat}, purchase);
+
+$("#sell-cat").on("click", {obj: blackCat}, sell);
+$("#sell-wand").on("click", {obj: magicWand}, sell);
+$("#sell-staff").on("click", {obj: magicStaff}, sell);
+$("#sell-broom").on("click", {obj: magicBroomstick}, sell);
+$("#sell-book").on("click", {obj: magicSpellbook}, sell);
+$("#sell-hat").on("click", {obj: wizardHat}, sell);
 
 // Functions
 // Factory function to automatically create an autoclicker object
@@ -102,7 +121,7 @@ function generateMana() {
 // Purchases any item passed in, increasing the cost of that item and the mana per second of the player
 function purchase(item) {
     item = item.data.obj;
-    const cost = Math.ceil(item.baseCost * Math.pow(1.1, item.numberOwned));
+    const cost = Math.ceil(item.baseCost * Math.pow(priceIncrease, item.numberOwned));
 
     if (mana >= cost) {
         mana -= cost;
@@ -115,7 +134,28 @@ function purchase(item) {
     }
 
     const newCost = Math.ceil(
-        item.baseCost * Math.pow(1.1, item.numberOwned)
+        item.baseCost * Math.pow(priceIncrease, item.numberOwned)
+    );
+    $(item.costId).text("Cost: " + newCost + " mana");
+}
+
+function sell(item) {
+    item = item.data.obj;
+    const cost = Math.ceil(item.baseCost * Math.pow(priceIncrease, item.numberOwned));
+    const sellPrice = Math.floor(cost * 0.5);
+
+    if (item.numberOwned > 0) {
+        mana += sellPrice;
+        manaPerSecond -= item.mps;
+        item.numberOwned--;
+
+        $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
+        $("#mana-per-second").text("Mana Generated per Second: " + manaPerSecond + " points");
+        $(item.countId).text("Owned: " + item.numberOwned);
+    }
+
+    const newCost = Math.ceil(
+        item.baseCost * Math.pow(priceIncrease, item.numberOwned)
     );
     $(item.costId).text("Cost: " + newCost + " mana");
 }
