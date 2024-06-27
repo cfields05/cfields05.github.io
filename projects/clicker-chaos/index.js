@@ -5,7 +5,8 @@ let manaPerSecond = 0;
 const newsTimer = 5_000;
 const priceIncrease = 1.15;
 
-// items array holds a list of items to be used in news generation
+/* LISTS BELOW TO BE USED IN NEWS GENERATION */
+
 const items = [
     "cursed crystals",
     "magic runes",
@@ -15,9 +16,19 @@ const items = [
     "spellbooks",
     "cast iron cauldrons",
     "broomsticks",
+    "comically oversized squeaky hammers"
 ];
 
-// people array holds a list of random people to be used in news generation
+const descriptions = [
+    "taste really bad",
+    "have too many calories",
+    "explode when shaken",
+    "are too shiny",
+    "aren't shiny enough",
+    "are just the right amount of shiny",
+    "don't seem very magical at all, honestly"
+];
+
 const people = [
     "local wizard",
     "neighborhood crazy lady",
@@ -26,9 +37,18 @@ const people = [
     "the boy who lived",
     "know-it-all witch",
     "fairy godmother",
+    "ancient spirit",
 ];
 
-// phrases array holds a list of phrases to be used in news generation
+const speakerTerms = [
+    "says",
+    "states",
+    "claims",
+    "declares",
+    "deplores",
+    "reveals",
+];
+
 const phrases = [
     "Bippity Boppity Boo",
     "Abra Cadabra",
@@ -38,25 +58,41 @@ const phrases = [
     "It's levi-OH-sa, not levio-SAH",
 ];
 
-// questions holds a list of questions to be used in news generation
 const questions = [
     "What IS the deal with airline food, anyway?",
     "How exactly does a broom generate mana?",
     "Have you seen Fantasia?",
 ];
 
+const companies = [
+    "MagiCo",
+    "WandMart",
+    "Whimsi-Corp",
+    "Dwarven Forge",
+    "AlchemicalWares",
+    "Eastern Elven Trading Company",
+];
+
+/* LISTS ABOVE TO BE USED IN NEWS GENERATION */
+
 // news array creates random messages to be displayed in the news bar
 const news = [
     () => `Prices of name-brand ${randomIndex(items)} skyrocketing!`,
-    () => `Mass recall of famous ${randomIndex(items)} due to spontaneous combustion!`,
-    () => `“${randomIndex(phrases)},” claims ${randomIndex(people)}!`,
+    () => `Mass recall of ${randomIndex(companies)}’s ${randomIndex(items)} due to spontaneous combustion!`,
+    () => `“${randomIndex(phrases)},” ${randomIndex(speakerTerms)} ${randomIndex(people)}!`,
     () => `${capitalize(people)} declares computers objectively inferior to magic!`,
     () => `Enchanted ${randomIndex(items)} said to reach speeds of 350 miles per hour!`,
-    () => `Popular ${randomIndex(items)} faulty, states ${randomIndex(people)}!`,
+    () => `Popular ${randomIndex(items)} “${randomIndex(descriptions)},” ${randomIndex(speakerTerms)} ${randomIndex(people)}!`,
     () => `“${randomIndex(questions)},” asks ${randomIndex(people)}.`,
 ];
 
-// “” quotation marks (for copying later)
+/*
+    Copy-Paste symbols:
+        ‘’ single quotation marks
+        “” double quotation marks
+        ™ unregistered trademark
+        ® registered trademark
+*/
 
 // Each autoclicker obj stores a mana per second value, the amount owned (starting at 0), and the base cost of the item, as well as the ids for the count and cost elements
 // Black Cats generate 1 mana per second and base price is 50 points of mana
@@ -77,6 +113,17 @@ const magicSpellbook = createAutoclicker(100, 1600, "#book-count", "#book-cost")
 // Super Cool Wizard Hats generate 200 mana per second and base price is 2500 points of mana
 const wizardHat = createAutoclicker(200, 2500, "#hat-count", "#hat-cost");
 
+// really bad solution I think, but autoclickers holds names of autoclickers so that strings can be passed into an object
+// and those grab the other objects for use in functions
+// ex. button val = blackCat, pass autoclickers[$('button').val()] into purchase function so that it'll grab blackCat dynamically
+const autoclickers = {
+    blackCat: blackCat,
+    magicWand: magicWand,
+    magicStaff: magicStaff,
+    magicBroomstick: magicBroomstick,
+    magicSpellbook: magicSpellbook,
+    wizardHat: wizardHat,
+};
 
 // Core Functionality
 newsMessage();
@@ -86,19 +133,13 @@ setInterval(addAutoMana, 1_000);
 // Event/Click Listeners
 $("#clicker-image").on("click", generateMana);
 
-$("#purchase-cat").on("click", {obj: blackCat}, purchase);
-$("#purchase-wand").on("click", {obj: magicWand}, purchase);
-$("#purchase-staff").on("click", {obj: magicStaff}, purchase);
-$("#purchase-broom").on("click", {obj: magicBroomstick}, purchase);
-$("#purchase-book").on("click", {obj: magicSpellbook}, purchase);
-$("#purchase-hat").on("click", {obj: wizardHat}, purchase);
-
-$("#sell-cat").on("click", {obj: blackCat}, sell);
-$("#sell-wand").on("click", {obj: magicWand}, sell);
-$("#sell-staff").on("click", {obj: magicStaff}, sell);
-$("#sell-broom").on("click", {obj: magicBroomstick}, sell);
-$("#sell-book").on("click", {obj: magicSpellbook}, sell);
-$("#sell-hat").on("click", {obj: wizardHat}, sell);
+$('button').click(function() {
+    if ($(this).hasClass('purchase')) {
+        purchase(autoclickers[$(this).val()]);
+    } else if ($(this).hasClass('sell')) {
+        sell(autoclickers[$(this).val()])
+    }
+});
 
 // Functions
 // Factory function to automatically create an autoclicker object
@@ -120,7 +161,7 @@ function generateMana() {
 
 // Purchases any item passed in, increasing the cost of that item and the mana per second of the player
 function purchase(item) {
-    item = item.data.obj;
+    // item = item.data.obj;
     const cost = Math.ceil(item.baseCost * Math.pow(priceIncrease, item.numberOwned));
 
     if (mana >= cost) {
@@ -140,7 +181,7 @@ function purchase(item) {
 }
 
 function sell(item) {
-    item = item.data.obj;
+    // item = item.data.obj;
     const cost = Math.ceil(item.baseCost * Math.pow(priceIncrease, item.numberOwned));
     const sellPrice = Math.floor(cost * 0.5);
 
