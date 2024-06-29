@@ -1,7 +1,8 @@
 
 // Variables
-let mana = 0;
+let mana = 1000;
 let manaPerSecond = 0;
+const mpsRate = 1_000;
 const newsTimer = 5_000;
 const priceIncrease = 1.15;
 
@@ -16,7 +17,7 @@ const items = [
     "spellbooks",
     "cast iron cauldrons",
     "broomsticks",
-    "comically oversized squeaky hammers"
+    "comically-oversized squeaky hammers"
 ];
 
 const descriptions = [
@@ -116,6 +117,7 @@ const wizardHat = createAutoclicker(200, 2500, "#hat-count", "#hat-cost");
 // really bad solution I think, but autoclickers holds names of autoclickers so that strings can be passed into an object
 // and those grab the other objects for use in functions
 // ex. button val = blackCat, pass autoclickers[$('button').val()] into purchase function so that it'll grab blackCat dynamically
+// TODO: Restructure code so both autoclicker obj and arr can be used by the same features without have duplicates
 const autoclickers = {
     blackCat: blackCat,
     magicWand: magicWand,
@@ -125,19 +127,41 @@ const autoclickers = {
     wizardHat: wizardHat,
 };
 
+const autoclickers2 = [
+    blackCat,
+    magicWand,
+    magicStaff,
+    magicBroomstick,
+    magicSpellbook,
+    wizardHat,
+];
+
+const ids = [
+    "cat",
+    "wand",
+    "staff",
+    "broom",
+    "book",
+    "hat",
+];
+
 // Core Functionality
 newsMessage();
 setInterval(newsMessage, newsTimer);
-setInterval(addAutoMana, 1_000);
+setInterval(addAutoMana, mpsRate);
+setInterval(updateButton, mpsRate);
+
+updateButton();
 
 // Event/Click Listeners
 $("#clicker-image").on("click", generateMana);
 
 $('button').click(function() {
+    const buttonId = $(this).val();
     if ($(this).hasClass('purchase')) {
-        purchase(autoclickers[$(this).val()]);
+        purchase(autoclickers[buttonId]);
     } else if ($(this).hasClass('sell')) {
-        sell(autoclickers[$(this).val()])
+        sell(autoclickers[buttonId]);
     }
 });
 
@@ -183,7 +207,7 @@ function purchase(item) {
 function sell(item) {
     // item = item.data.obj;
     const cost = Math.ceil(item.baseCost * Math.pow(priceIncrease, item.numberOwned));
-    const sellPrice = Math.floor(cost * 0.5);
+    const sellPrice = Math.floor(cost * 0.40);
 
     if (item.numberOwned > 0) {
         mana += sellPrice;
@@ -230,4 +254,24 @@ function randomIndex(arr) {
 function capitalize(arr) {
     const random = Math.floor(Math.random() * arr.length);
     return arr[random].charAt(0).toUpperCase() + arr[random].slice(1);
+}
+
+// enables / disables a button depending on if the user has enough mana to purchase an item
+function updateButton() {
+    for (let i = 0; i < ids.length; i++) {
+        const item = autoclickers2[i];
+        const id = ids[i];
+        const cost = Math.ceil(item.baseCost * Math.pow(priceIncrease, item.numberOwned));
+        const purchaseButton = document.getElementById('purchase-' + id);
+        const sellButton = document.getElementById('sell-' + id);;
+        if (mana < cost) {
+            purchaseButton.disabled = true;
+        } else {
+            purchaseButton.disabled = false;
+        } if (item.numberOwned === 0) {
+            sellButton.disabled = true;
+        } else {
+            sellButton.disabled = false;
+        }
+    }
 }

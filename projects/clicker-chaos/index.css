@@ -65,6 +65,15 @@ button {
     padding-right: 25px;
 }
 
+button:disabled {
+    background-color: lightsteelblue;
+}
+
+button:hover {
+    background-color: aliceblue;
+    border-color: skyblue;
+}
+
 .sell {
     margin-left: 15px;
 }

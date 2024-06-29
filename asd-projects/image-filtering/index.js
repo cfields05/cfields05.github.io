@@ -37,51 +37,21 @@ function resetAndRender() {
 // all of your apply functions
 function applyAndRender() {
   // Multiple TODOs: Call your apply function(s) here
-  const filter = $('#filters option:selected').val();
+  const filter = window[$('#filters option:selected').val()];
   const includeBG = $('#includeBackground option:selected').val();
-
+  console.log(filter);
 
   if (includeBG === 'true') {
-    switch (filter) {
-      case 'reddify':
-        applyFilter(reddify);
-        break;
-      case 'decreaseBlue':
-        applyFilter(decreaseBlue);
-        break;
-      case 'increaseGreenByBlue':
-        applyFilter(increaseGreenByBlue);
-        break;
-      case 'invert':
-        applyFilter(invert);
-        break;
-      case 'grayscale':
-        applyFilter(grayscale);
-        break;
-      case 'smudge':
-        smudge();
-        break;
+    if (filter === 'smudge') {
+      smudge();
+    } else {
+      applyFilter(filter)
     }
   } else {
-    switch (filter) {
-      case 'reddify':
-        applyFilterNoBackground(reddify);
-        break;
-      case 'decreaseBlue':
-        applyFilterNoBackground(decreaseBlue);
-        break;
-      case 'increaseGreenByBlue':
-        applyFilterNoBackground(increaseGreenByBlue);
-        break;
-      case 'invert':
-        applyFilterNoBackground(invert);
-        break;
-      case 'grayscale':
-        applyFilterNoBackground(grayscale);
-        break;
-      case 'smudge':
-        smudgeNoBG();
-        break;
+    if (filter === 'smudge') {
+      smudgeNoBG();
+    } else {
+      applyFilterNoBackground(filter)
     }
   }
 
@@ -163,6 +133,16 @@ function reddify(color) {
 }
 
 // TODO 6: Create more filter functions
+
+// Tints the image blue by setting blue value to 200
+function blueify(color) {
+  color[BLUE] = 200;
+}
+
+// Tints the image green by setting green value to 200
+function greenify(color) {
+  color[GREEN] = 200;
+}
 
 // Decreases the value of blue in the image by 50 to a minimum of 0
 function decreaseBlue(color) {
