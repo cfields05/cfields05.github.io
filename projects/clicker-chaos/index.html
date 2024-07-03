@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wizard Clicker</title>
     <link rel="stylesheet" href="index.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -12,7 +14,7 @@
     <!-- <div class="top-box"> -->
     <div class="main-box">
         <div class="clicker-box">
-            <img src="/projects/clicker-chaos/images/orb.png" id="clicker-image">
+            <img src="/projects/clicker-chaos/images/orb.png" id="clicker-image" alt="magic orb">
             <p id="mana-amount">Mana Generated: 0 points</p>
             <p id="mana-per-second">Mana Generated per Second: 0 points</p>
         </div>
@@ -23,7 +25,7 @@
             </div>
 
             <div class="autoclicker" id="autoclicker2" title="One point of mana generated per second!">
-                <p>Beginner's Wand</p>
+                <p>Starter Wand</p>
                 <p id="wand-count">Owned: 0</p>
                 <p id="wand-cost">Cost: 50 mana</p>
                 <button class="purchase" id="purchase-wand" value="0">BUY ONE</button>
@@ -39,7 +41,7 @@
             </div>
 
             <div class="autoclicker" id="autoclicker3" title="Twenty-five points of mana generated per second!">
-                <p>Staff</p>
+                <p>Sorcerer's Staff</p>
                 <p id="staff-count">Owned: 0</p>
                 <p id="staff-cost">Cost: 500 mana</p>
                 <button class="purchase" id="purchase-staff" value="2">BUY ONE</button>
@@ -70,13 +72,31 @@
                 <button class="sell" id="sell-hat" value="5">SELL ONE</button>
             </div>
 
-            <!-- <div class="autoclicker" id="autoclicker7" title="Four hundred points of mana generated per second!">
-                <p></p>
-            </div> -->
+            <div class="autoclicker" id="autoclicker7" title="Four hundred points of mana generated per second!">
+                <p>Witch's Cauldron</p>
+                <p id="cauldron-count">Owned: 0</p>
+                <p id="cauldron-cost">Cost: 5500 mana</p>
+                <button class="purchase" id="purchase-cauldron" value="5">BUY ONE</button>
+                <button class="sell" id="sell-cauldron" value="5">SELL ONE</button>
+            </div>
         </div>
 
         <div class="upgrade-box">
+            <div class="toggle-box">
+                <button class="toggle-button">UPGRADES</button>
+            </div>
 
+            <div class="upgrade" id="upgrade1" title="Doubles clicking power!">
+                <p>Baby's First Orb</p>
+                <p>Cost: 100 mana</p>
+                <button class="upgrade-purchase">PURCHASE</button>
+            </div>
+
+            <div class="upgrade" id="upgrade2" title="Doubles the efficiency of wands!">
+                <p>Beginner's Textbook</p>
+                <p>Cost: 200 mana</p>
+                <button class="upgrade-purchase">PURCHASE</button>
+            </div>
         </div>
     </div>
     <div class="news-box">

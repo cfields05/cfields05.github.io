@@ -11,7 +11,7 @@ h1 {
     flex-direction: row;
     justify-content: space-between;
     background-color: rgb(146, 78, 219);
-    border-radius: 20px;
+    border-radius: 30px;
     height: 700px;
 }
 
@@ -22,6 +22,7 @@ as a vertical list */
     flex-grow: 2;
     display: flex;
     flex-direction: column;
+    width: 800px;
     border-radius: 20px;
     overflow-y: auto;
 }
@@ -41,16 +42,33 @@ as a vertical list */
     padding-right: 40px;
 }
 
-
 .upgrade-box {
     flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    width: 800px;
     border-radius: 20px;
-    display: none;
+    overflow-y: auto;
+}
+
+.upgrade-box > div {
+    margin: 10px;
+    padding: 15px;
+    border-radius: 20px;
+    font-size: 18px;
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;
+}
+
+.upgrade > p {
+    padding-right: 40px;
 }
 
 .clicker-box {
     flex-grow: 4;
     border-radius: 20px;
+    width: 600px;
 }
 
 .clicker-box > img {
@@ -96,7 +114,7 @@ button:hover {
     font-weight: bold;
 }
 
-.main-box > div {
+.main-box>div {
     background-color: rgb(245, 238, 219);
     margin: 20px;
     padding: 30px;
@@ -111,7 +129,7 @@ button:hover {
     justify-content: space-between;
     align-items: stretch;
     background-color: rgb(146, 78, 219);
-    border-radius: 20px;
+    border-radius: 30px;
 }
 
 .inner-box {
@@ -127,6 +145,16 @@ button:hover {
 #text {
     padding-left: 20px;
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+    margin-right: 10px;
+}
+::-webkit-scrollbar-thumb {
+    background: steelblue;
+    border-radius: 5px;
+}
+
 
 /* .credits {
     background-color: lightskyblue;

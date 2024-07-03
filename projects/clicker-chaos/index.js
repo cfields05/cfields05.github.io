@@ -1,7 +1,10 @@
 
+$('.upgrade-box').hide()
+
 // Variables
 let mana = 0;
 let manaPerSecond = 0;
+let clickPower = 1;
 const mpsRate = 1_000;
 const newsTimer = 5_000;
 const priceIncrease = 1.15;
@@ -103,43 +106,18 @@ const news = [
 
 */
 
-// Each autoclicker obj stores a mana per second value, the amount owned (starting at 0), and the base cost of the item, as well as the ids for the count and cost elements
-// Starter Wands generate 1 mana per second and base price is 50 points of mana
-const starterWand = createAutoclicker(1, 50, "#wand-count", "#wand-cost");
-
-// Black Cats generate 10 mana per second and base price is 200 points of mana
-const blackCat = createAutoclicker(10, 200, "#cat-count", "#cat-cost");
-
-// Magic Staves generate 25 mana per second and base price is 500 points of mana
-const magicStaff = createAutoclicker(25, 500, "#staff-count", "#staff-cost");
-
-// Magic Broomsticks generate 50 mana per second and base price is 1000 points of mana
-const magicBroom = createAutoclicker(50, 1000, "#broom-count", "#broom-cost");
-
-// Magic Spellbooks generate 100 mana per second and base price is 1600 points of mana
-const magicSpellbook = createAutoclicker(100, 1600, "#book-count", "#book-cost");
-
-// Super Cool Wizard Hats generate 200 mana per second and base price is 2500 points of mana
-const wizardHat = createAutoclicker(200, 2500, "#hat-count", "#hat-cost");
-
 // autoclicker holds all autoclickers for dynamically making buttons work and update
-const autoclickers = [
-    starterWand,
-    blackCat,
-    magicStaff,
-    magicBroom,
-    magicSpellbook,
-    wizardHat,
-];
+const autoclickers = [];
 
-const ids = [
-    "wand",
-    "cat",
-    "staff",
-    "broom",
-    "book",
-    "hat",
-];
+// Each autoclicker obj stores a mana per second value, the amount owned (starting at 0), and the base cost of the item, as well as an id string
+// Sytax: createAutoclicker(mps, price, id)
+const wand = createAutoclicker(1, 50, "wand");
+const cat = createAutoclicker(10, 200, "cat");
+const staff = createAutoclicker(25, 500, "staff");
+const broom = createAutoclicker(50, 1000, "broom");
+const spellbook = createAutoclicker(100, 1600, "book");
+const hat = createAutoclicker(200, 2500, "hat");
+const cauldron = createAutoclicker(400, 5500, "cauldron");
 
 // Core Functionality
 newsMessage();
@@ -151,6 +129,7 @@ updateButton();
 
 // Event/Click Listeners
 $("#clicker-image").on("click", generateMana);
+$(".toggle-button").on("click", handleToggle);
 
 $('button').click(function() {
     const buttonId = parseInt($(this).val());
@@ -163,26 +142,48 @@ $('button').click(function() {
 
 // Functions
 // Factory function to automatically create an autoclicker object
-function createAutoclicker(mps, baseCost, countId, costId) {
-    return {
+// Pushes obj to autoclickers array before returning it
+function createAutoclicker(mps, baseCost, id) {
+    const obj = {
         mps: mps,
         numberOwned: 0,
         baseCost: baseCost,
-        countId: countId,
-        costId: costId,
+        id: id,
     };
+    autoclickers.push(obj);
+    return obj;
+}
+
+// Factory function to automatically create an upgrade object
+function createUpgrade(mpsMod, clickMod, cost, id, modId) {
+    return {
+        mpsMod: mpsMod,
+        clickMod: clickMod,
+        cost: cost,
+        id: id,
+        modId: modId,
+    }
 }
 
 // Increases mana and updates text when orb is clicked
 function generateMana() {
-    mana++;
+    mana += clickPower;
     $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
+}
+
+function purchaseUpgrade(item) {
+    if (mana >= item.cost) {
+        mana -= item.cost;
+        item.modId.mps *= item.mpsMod;
+        clickPower *= item.clickMod;
+    }
 }
 
 // Purchases any item passed in, increasing the cost of that item and the mana per second of the player
 function purchase(item) {
-    // item = item.data.obj;
     const cost = Math.ceil(item.baseCost * Math.pow(priceIncrease, item.numberOwned));
+    const countId = '#' + item.id + "-count";
+    const costId = '#' + item.id + "-cost";
 
     if (mana >= cost) {
         mana -= cost;
@@ -191,19 +192,20 @@ function purchase(item) {
 
         $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
         $("#mana-per-second").text("Mana Generated per Second: " + manaPerSecond + " points");
-        $(item.countId).text("Owned: " + item.numberOwned);
+        $(countId).text("Owned: " + item.numberOwned);
     }
 
     const newCost = Math.ceil(
         item.baseCost * Math.pow(priceIncrease, item.numberOwned)
     );
-    $(item.costId).text("Cost: " + newCost + " mana");
+    $(costId).text("Cost: " + newCost + " mana");
 }
 
 function sell(item) {
-    // item = item.data.obj;
     const cost = Math.ceil(item.baseCost * Math.pow(priceIncrease, item.numberOwned));
     const sellPrice = Math.floor(cost * 0.40);
+    const countId = '#' + item.id + "-count";
+    const costId = '#' + item.id + "-cost";
 
     if (item.numberOwned > 0) {
         mana += sellPrice;
@@ -212,13 +214,13 @@ function sell(item) {
 
         $("#mana-amount").text("Mana Generated: " + Math.floor(mana) + " points");
         $("#mana-per-second").text("Mana Generated per Second: " + manaPerSecond + " points");
-        $(item.countId).text("Owned: " + item.numberOwned);
+        $(countId).text("Owned: " + item.numberOwned);
     }
 
     const newCost = Math.ceil(
         item.baseCost * Math.pow(priceIncrease, item.numberOwned)
     );
-    $(item.costId).text("Cost: " + newCost + " mana");
+    $(costId).text("Cost: " + newCost + " mana");
 }
 
 // Handles automatically increasing your mana
@@ -254,12 +256,11 @@ function capitalize(arr) {
 
 // enables / disables a button depending on if the user has enough mana to purchase an item
 function updateButton() {
-    for (let i = 0; i < ids.length; i++) {
+    for (let i = 0; i < autoclickers.length; i++) {
         const item = autoclickers[i];
-        const id = ids[i];
         const cost = Math.ceil(item.baseCost * Math.pow(priceIncrease, item.numberOwned));
-        const purchaseButton = document.getElementById('purchase-' + id);
-        const sellButton = document.getElementById('sell-' + id);;
+        const purchaseButton = document.getElementById('purchase-' + item.id);
+        const sellButton = document.getElementById('sell-' + item.id);;
         if (mana < cost) {
             purchaseButton.disabled = true;
         } else {
@@ -270,4 +271,9 @@ function updateButton() {
             sellButton.disabled = false;
         }
     }
+}
+
+function handleToggle() {
+    $('.autoclicker-box').toggle();
+    $('.upgrade-box').toggle();
 }
