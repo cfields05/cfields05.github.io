@@ -2,12 +2,17 @@ body {
     background-color: lightsteelblue;
 }
 
+h1 {
+    text-align: center;
+}
+
 .main-box {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     background-color: rgb(146, 78, 219);
     border-radius: 20px;
+    height: 700px;
 }
 
 /* Flex direction: column here allows us
@@ -18,6 +23,7 @@ as a vertical list */
     display: flex;
     flex-direction: column;
     border-radius: 20px;
+    overflow-y: auto;
 }
 
 .autoclicker-box > div {
@@ -39,6 +45,7 @@ as a vertical list */
 .upgrade-box {
     flex-grow: 2;
     border-radius: 20px;
+    display: none;
 }
 
 .clicker-box {
@@ -56,6 +63,12 @@ as a vertical list */
     text-align: center;
 }
 
+.toggle-button {
+    margin: 0px auto 0px auto;
+    padding: 10px 25px 10px 25px;
+    font-weight: 800;
+}
+
 button {
     border-radius: 20px;
     border: 5px steelblue solid;
@@ -63,6 +76,7 @@ button {
     margin-left: auto;
     padding-left: 25px;
     padding-right: 25px;
+    color: rgb(29, 72, 107);
 }
 
 button:disabled {
